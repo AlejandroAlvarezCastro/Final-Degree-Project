@@ -33,17 +33,20 @@ def simulations(num_simulations, model, train_f, train_l, valid_f, valid_l, ass_
     # loss = tf.keras.losses.binary_crossentropy
 
     optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
+
+    classes = ['OK', 'NOK']
     
     precision_scores = []
     recall_scores = []
     f1_scores = []
     accuracy_scores = []
+    confusion_matrices = []
 
     save_path = os.path.join(os.getcwd(), 'ZN_1D_imgs/')
     modelPath = os.path.join(os.getcwd(), 'ZN_1D_imgs/bestModel.h5')
 
     # Perform 10 simulations of network training
-    for _ in range(10):
+    for _ in range(num_simulations):
         # Create the model
         model = model
 
@@ -87,48 +90,57 @@ def simulations(num_simulations, model, train_f, train_l, valid_f, valid_l, ass_
         recall = recall_score(yTestClass, yPredClass, average=None)
         f1 = f1_score(yTestClass, yPredClass, average=None)
         accuracy = accuracy_score(yTestClass, yPredClass)
+        confusion_matrix_sim = confusion_matrix(yTestClass, yPredClass)
 
         # Store metrics for this simulation
         precision_scores.append(precision)
         recall_scores.append(recall)
         f1_scores.append(f1)
         accuracy_scores.append(accuracy)
+        confusion_matrices.append(confusion_matrix_sim)
 
     # Convert lists to arrays to facilitate calculation of mean and standard deviation
     precision_scores = np.array(precision_scores)
     recall_scores = np.array(recall_scores)
     f1_scores = np.array(f1_scores)
     accuracy_scores = np.array(accuracy_scores)
+    confusion_matrices = np.array(confusion_matrices)
 
     # Calculate mean and standard deviation of metrics per class
     mean_precision = np.mean(precision_scores, axis=0)
     mean_recall = np.mean(recall_scores, axis=0)
     mean_f1 = np.mean(f1_scores, axis=0)
     mean_accuracy = np.mean(accuracy_scores)
+    mean_confusion_matrix = np.mean(confusion_matrices, axis=0)
 
     std_dev_precision = np.std(precision_scores, axis=0)
     std_dev_recall = np.std(recall_scores, axis=0)
     std_dev_f1 = np.std(f1_scores, axis=0)
     std_dev_accuracy = np.std(accuracy_scores)
+    std_dev_confusion_matrix = np.std(confusion_matrices, axis=0)
 
     # Print results
     print("\nMean Precision:", mean_precision)
     print("Mean Recall:", mean_recall)
     print("Mean F1-score:", mean_f1)
     print("Mean Accuracy:", mean_accuracy)
+    print("Mean Conf. Matrix", mean_confusion_matrix)
 
     print("\nStandard Deviation of Precision:", std_dev_precision)
     print("Standard Deviation of Recall:", std_dev_recall)
     print("Standard Deviation of F1-score:", std_dev_f1)
     print("Standard Deviation of Accuracy:", std_dev_accuracy)
+    print("Standart Conf. Matrix", std_dev_confusion_matrix)
 
     # Obtain a plot to visualize results
-    fig = plot_metrics(mean_precision, std_dev_precision, mean_recall, std_dev_recall, mean_f1, std_dev_f1)
+    metrics_plot = plot_metrics(mean_precision, std_dev_precision, mean_recall, std_dev_recall, mean_f1, std_dev_f1, classes)
 
-    return fig, mean_precision, std_dev_precision, mean_recall, std_dev_recall, mean_f1, std_dev_f1, mean_accuracy, std_dev_accuracy
+    conf_plot = plot_confusion_matrix(mean_confusion_matrix, std_dev_confusion_matrix, classes)
+
+    return metrics_plot, conf_plot, mean_precision, std_dev_precision, mean_recall, std_dev_recall, mean_f1, std_dev_f1, mean_accuracy, std_dev_accuracy
 
 
-def plot_metrics(mean_precision, std_dev_precision, mean_recall, std_dev_recall, mean_f1, std_dev_f1):
+def plot_metrics(mean_precision, std_dev_precision, mean_recall, std_dev_recall, mean_f1, std_dev_f1, classes):
     metrics = {
         'Precision': {
             'mean': mean_precision,
@@ -142,8 +154,6 @@ def plot_metrics(mean_precision, std_dev_precision, mean_recall, std_dev_recall,
             'mean': mean_f1,
             'stddev': std_dev_f1,
             'color': 'rgb(51, 153, 255)'}}
-
-    classes = ['OK', 'NOK']
 
     # Create the figure
     fig = go.Figure()
@@ -166,4 +176,32 @@ def plot_metrics(mean_precision, std_dev_precision, mean_recall, std_dev_recall,
         barmode='group',
         bargap=0.15)
 
+    return fig
+
+
+def plot_confusion_matrix(mean_confusion_matrix, std_dev_confusion_matrix, classes):
+    fig = go.Figure(data=go.Heatmap(z=mean_confusion_matrix,
+                                     zmin=mean_confusion_matrix.min(),
+                                     zmax=mean_confusion_matrix.max(),
+                                     hoverongaps=False,
+                                     colorscale='Blues',
+                                     colorbar=dict(title='Count')))
+
+    annotations = []
+
+    for i in range(mean_confusion_matrix.shape[0]):
+        for j in range(mean_confusion_matrix.shape[1]):
+            annotation = {
+                'x': j,
+                'y': i,
+                'text': f"{mean_confusion_matrix[i, j]:.2f} ± {std_dev_confusion_matrix[i, j]:.2f}",
+                'showarrow': False,
+                'font': {'color': 'black'}
+            }
+            annotations.append(annotation)
+
+    fig.update_layout(title='Confusion Matrix (Mean +/- Standard Deviation)',
+                      xaxis=dict(tickvals=list(range(len(classes))), ticktext=classes),
+                      yaxis=dict(tickvals=list(range(len(classes))), ticktext=classes),
+                      annotations=annotations)
     return fig
