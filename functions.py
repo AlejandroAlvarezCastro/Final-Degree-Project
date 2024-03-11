@@ -6,8 +6,17 @@ import numpy as np
 
 import plotly.graph_objects as go
 
-from evidently.dashboard import Dashboard
-from evidently.dashboard.tabs import ProbClassificationPerformanceTab
+import evidently
+from evidently.options import ColorOptions
+from evidently.test_suite import TestSuite
+from evidently.tests import *
+from evidently.ui.workspace.cloud import CloudWorkspace
+from evidently.report import Report
+# from evidently.dashboard import Dashboard
+# from evidently.dashboard.tabs import ProbClassificationPerformanceTab
+# from evidently.model_profile import Profile
+# from evidently.profile_sections import ClassificationPerformanceProfileSection
+# from evidently.tabs import ClassificationPerformanceTab
 
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
@@ -43,7 +52,7 @@ def simulations(num_simulations, model, train_f, train_l, valid_f, valid_l, ass_
     confusion_matrices = []
 
     save_path = os.path.join(os.getcwd(), 'ZN_1D_imgs/')
-    modelPath = os.path.join(os.getcwd(), 'ZN_1D_imgs/bestModel.h5')
+    modelPath = os.path.join(os.getcwd(), 'ZN_1D_imgs/bestModel.keras')
 
     # Perform 10 simulations of network training
     for _ in range(num_simulations):
@@ -84,6 +93,9 @@ def simulations(num_simulations, model, train_f, train_l, valid_f, valid_l, ass_
         # Get predictions on the independent set
         yPredClass = np.argmax(model.predict(ass_f), axis=-1)
         yTestClass = np.argmax(ass_l, axis=1)
+
+        # Run evidently AI test
+        run_evidently_test(yPredClass, yTestClass)
 
         # Calculate metrics per class
         precision = precision_score(yTestClass, yPredClass, average=None)
@@ -205,3 +217,45 @@ def plot_confusion_matrix(mean_confusion_matrix, std_dev_confusion_matrix, class
                       yaxis=dict(tickvals=list(range(len(classes))), ticktext=classes),
                       annotations=annotations)
     return fig
+
+
+
+
+def run_evidently_test(predictions_array, y_true):
+    # Create a Profile
+
+    curr_data = {
+        'target': y_true,
+        'predictions': predictions_array}
+
+    curr_data = pd.DataFrame(curr_data)
+    
+    classification_performance_dataset_tests =TestSuite(tests=[
+                                                        TestAccuracyScore(),
+                                                        TestPrecisionScore(),
+                                                        TestRecallScore(),
+                                                        TestF1Score(),
+                                                        TestPrecisionByClass(label=0),
+                                                        TestPrecisionByClass(label=1),
+                                                        TestPrecisionByClass(label=2),
+                                                        TestRecallByClass(label=0),
+                                                        TestRecallByClass(label=1),
+                                                        TestRecallByClass(label=2),
+                                                        TestF1ByClass(label=0),
+                                                        TestF1ByClass(label=1),
+                                                        TestF1ByClass(label=2)])
+    
+    # Run the test
+    classification_performance_dataset_tests.run(reference_data=None, current_data=curr_data)
+
+    # Upload report to EvidentlyAI
+    ws = CloudWorkspace(
+        token="dG9rbgF5sQ3u67hNVo7e7sL4fnJ4+9DpuR+b778AZBtKinzUygBQuzpCQ5CLgwI9Gu+bIOgKn7c7e8SscZauU2bz70HJuk6cPV14XyrDKKl3Tg1SXt5FsEIp9bSTX5sOYXqXABHlDJlbcjobYNq4dZ2Wa6dhspPZQVb9",
+        url="https://app.evidently.cloud"
+    )
+
+    project = ws.get_project("3fb185be-7c79-494b-9401-d789a877c4ca")
+
+    ws.add_test_suite(project.id, classification_performance_dataset_tests)
+
+
