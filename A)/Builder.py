@@ -33,17 +33,6 @@ class ConvNetBuilder:
         if num_f_layers != num_int_values:
             raise ValueError("The number of integer values at the end of the layer_types list must be equal to the number of dense layers.")
 
-        # Check that there are only non-zero values in positions where layer_types is 'C'
-        for idx, layer_type in enumerate(layer_types):
-            if layer_type == 'C':
-                if kernel_widths[idx] == 0 or filters[idx] == 0:
-                    raise ValueError("In positions where layer_type is 'C', the values in the kernel_widths and filters lists must be non-zero.")
-
-        # Check that kernel_widths and filters lists have at least as many elements as there are elements in layer_types up to the last 'C' included
-        last_conv_idx = len(layer_types) - 1 - layer_types[::-1].index('C')
-        if len(kernel_widths) < last_conv_idx + 1 or len(filters) < last_conv_idx + 1:
-            raise ValueError("The kernel_widths and filters lists must have at least as many elements as there are elements in layer_types up to the last 'C' included.")
-
     def find_integer_indices(self):
         # Iterate over the layer_types list and obtain the indices of the integer elements
         for i, element in enumerate(self.layer_types):
