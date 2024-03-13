@@ -27,11 +27,30 @@ import tensorflow as tf
 from tensorflow.keras import models
 from tensorflow.keras import layers
 from tensorflow.keras import optimizers
+from tensorflow.keras.utils import plot_model
 from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
 
 
 def simulations(model_name, num_simulations, model, train_f, train_l, valid_f, valid_l, ass_f, ass_l):
+    """
+    Performs simulations of neural network training and calculates performance metrics.
 
+    Args:
+        model_name (str): Name of the model.
+        num_simulations (int): Number of simulations to perform.
+        model (tf.keras.Model): Neural network model to train.
+        train_f (numpy.ndarray): Training features.
+        train_l (numpy.ndarray): Training labels.
+        valid_f (numpy.ndarray): Validation features.
+        valid_l (numpy.ndarray): Validation labels.
+        ass_f (numpy.ndarray): Features of the independent test set.
+        ass_l (numpy.ndarray): Labels of the independent test set.
+
+    Returns:
+        tuple: A tuple containing two plots and performance metrics.
+            - metrics_plot: Metrics plot.
+            - conf_plot: Confusion matrix plot.
+    """
     learning_rate   = 2e-4
     BATCH_SIZE      = 50
     STEPS_PER_EPOCH = train_l.size / BATCH_SIZE
@@ -153,6 +172,10 @@ def simulations(model_name, num_simulations, model, train_f, train_l, valid_f, v
     print("Standard Deviation of Accuracy:", std_dev_accuracy)
     print("Standart Conf. Matrix", std_dev_confusion_matrix)
 
+    # Save model summary as an image
+    model_summary_img_path = os.path.join(model_dir, "model_summary.png")
+    plot_model(model, to_file=model_summary_img_path, show_shapes=True, show_layer_names=True)
+
     # Obtain a plot to visualize results
     metrics_plot = plot_metrics(mean_precision, std_dev_precision, mean_recall, std_dev_recall, mean_f1, std_dev_f1, classes)
 
@@ -162,10 +185,25 @@ def simulations(model_name, num_simulations, model, train_f, train_l, valid_f, v
     pio.write_image(metrics_plot, os.path.join(model_dir, 'metrics_plot.png'))
     pio.write_image(conf_plot, os.path.join(model_dir, 'confusion_matrix_plot.png'))
 
-    return metrics_plot, conf_plot, mean_precision, std_dev_precision, mean_recall, std_dev_recall, mean_f1, std_dev_f1, mean_accuracy, std_dev_accuracy
-
+    # return metrics_plot, conf_plot, mean_precision, std_dev_precision, mean_recall, std_dev_recall, mean_f1, std_dev_f1, mean_accuracy, std_dev_accuracy
+    return metrics_plot, conf_plot
 
 def plot_metrics(mean_precision, std_dev_precision, mean_recall, std_dev_recall, mean_f1, std_dev_f1, classes):
+    """
+    Plots metrics such as Precision, Recall, and F1-Score per class.
+
+    Args:
+        mean_precision (numpy.ndarray): Mean precision values per class.
+        std_dev_precision (numpy.ndarray): Standard deviation of precision values per class.
+        mean_recall (numpy.ndarray): Mean recall values per class.
+        std_dev_recall (numpy.ndarray): Standard deviation of recall values per class.
+        mean_f1 (numpy.ndarray): Mean F1-Score values per class.
+        std_dev_f1 (numpy.ndarray): Standard deviation of F1-Score values per class.
+        classes (list): List of class labels.
+
+    Returns:
+        plotly.graph_objs._figure.Figure: A Plotly figure object containing the metrics plot.
+    """
     metrics = {
         'Precision': {
             'mean': mean_precision,
@@ -205,6 +243,17 @@ def plot_metrics(mean_precision, std_dev_precision, mean_recall, std_dev_recall,
 
 
 def plot_confusion_matrix(mean_confusion_matrix, std_dev_confusion_matrix, classes):
+    """
+    Plots the confusion matrix with mean values and standard deviations.
+
+    Args:
+        mean_confusion_matrix (numpy.ndarray): Mean values of the confusion matrix.
+        std_dev_confusion_matrix (numpy.ndarray): Standard deviations of the confusion matrix.
+        classes (list): List of class labels.
+
+    Returns:
+        plotly.graph_objs._figure.Figure: A Plotly figure object containing the confusion matrix plot.
+    """
     fig = go.Figure(data=go.Heatmap(z=mean_confusion_matrix,
                                      zmin=mean_confusion_matrix.min(),
                                      zmax=mean_confusion_matrix.max(),

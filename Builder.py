@@ -1,6 +1,24 @@
 import tensorflow as tf
 
 class ConvNetBuilder:
+    """
+    A utility class for building convolutional neural network architectures.
+
+    Args:
+        kernel_widths (list): List of kernel widths for convolutional layers.
+        filters (list): List of filter numbers for convolutional layers.
+        dropouts (list): List of dropout rates for dropout layers.
+        layer_types (list): List of layer types ('C' for convolutional, 'N' for normalization, 
+                            'P' for pooling, 'flatten' for flattening, 'D' for dropout, and 'F' for dense).
+        name (str): Name of the convolutional neural network model.
+
+    Raises:
+        ValueError: If there is inconsistency in the provided architecture specifications.
+
+    Methods:
+        find_integer_indices(): Identifies the indices of integer elements in the layer_types list.
+        build_model(): Constructs a TensorFlow Sequential model based on the provided architecture specifications.
+    """
     def __init__(self, kernel_widths, filters, dropouts, layer_types, name):
         self.name = name 
         self.kernel_widths = kernel_widths
@@ -33,17 +51,23 @@ class ConvNetBuilder:
                 self.integer_indices.append(i)
 
     def build_model(self):
-
         model = tf.keras.Sequential()
 
         self.find_integer_indices()  # Calculate the indices of integer elements
 
         denses = 0  # Counter for dense layers
         drops = 0  # Counter for dropout layers
+        kernel_index = 0  # Index for kernel widths list
+        filter_index = 0  # Index for filter numbers list
 
         for idx, layer_type in enumerate(self.layer_types):
             if layer_type == 'C':  # Convolutional layer
-                model.add(tf.keras.layers.Conv1D(filters=self.filters[idx], kernel_size=self.kernel_widths[idx], activation='relu'))
+                if kernel_index < len(self.kernel_widths) and filter_index < len(self.filters):  # Check if kernel widths and filters are available
+                    model.add(tf.keras.layers.Conv1D(filters=self.filters[filter_index], kernel_size=self.kernel_widths[kernel_index], activation='relu'))
+                    kernel_index += 1
+                    filter_index += 1
+                else:
+                    print("Not enough kernel widths or filter numbers available to add convolutional layers.")
             elif layer_type == 'N':  # Normalization layer
                 model.add(tf.keras.layers.BatchNormalization())
             elif layer_type == 'P':  # Pooling layer
@@ -68,3 +92,4 @@ class ConvNetBuilder:
                     print("Not enough integer indices available to add dense layers.")
 
         return model, self.name
+
