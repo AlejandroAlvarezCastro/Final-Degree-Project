@@ -1,7 +1,8 @@
 import tensorflow as tf
 
 class ConvNetBuilder:
-    def __init__(self, kernel_widths, filters, dropouts, layer_types):
+    def __init__(self, kernel_widths, filters, dropouts, layer_types, name):
+        self.name = name 
         self.kernel_widths = kernel_widths
         self.filters = filters
         self.dropouts = dropouts
@@ -66,6 +67,4 @@ class ConvNetBuilder:
                 else:
                     print("Not enough integer indices available to add dense layers.")
 
-            # Rest of the code for other layer types
-
-        return model
+        return model, self.name

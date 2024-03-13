@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 
 import plotly.graph_objects as go
+import plotly.io as pio
 
 import evidently
 from evidently.options import ColorOptions
@@ -29,7 +30,7 @@ from tensorflow.keras import optimizers
 from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
 
 
-def simulations(num_simulations, model, train_f, train_l, valid_f, valid_l, ass_f, ass_l):
+def simulations(model_name, num_simulations, model, train_f, train_l, valid_f, valid_l, ass_f, ass_l):
 
     learning_rate   = 2e-4
     BATCH_SIZE      = 50
@@ -50,6 +51,14 @@ def simulations(num_simulations, model, train_f, train_l, valid_f, valid_l, ass_
     f1_scores = []
     accuracy_scores = []
     confusion_matrices = []
+
+    # Construct directory name
+    resultados_dir = os.path.join(os.getcwd(), 'resultados')
+    model_dir = os.path.join(resultados_dir, model_name)
+    # Create "resultados" directory if it doesn't exist
+    os.makedirs(resultados_dir, exist_ok=True)
+    # Create model directory
+    os.makedirs(model_dir, exist_ok=True)
 
     save_path = os.path.join(os.getcwd(), 'ZN_1D_imgs/')
     modelPath = os.path.join(os.getcwd(), 'ZN_1D_imgs/bestModel.keras')
@@ -95,7 +104,7 @@ def simulations(num_simulations, model, train_f, train_l, valid_f, valid_l, ass_
         yTestClass = np.argmax(ass_l, axis=1)
 
         # Run evidently AI test
-        run_evidently_test(yPredClass, yTestClass)
+        # run_evidently_test(yPredClass, yTestClass)
 
         # Calculate metrics per class
         precision = precision_score(yTestClass, yPredClass, average=None)
@@ -148,6 +157,10 @@ def simulations(num_simulations, model, train_f, train_l, valid_f, valid_l, ass_
     metrics_plot = plot_metrics(mean_precision, std_dev_precision, mean_recall, std_dev_recall, mean_f1, std_dev_f1, classes)
 
     conf_plot = plot_confusion_matrix(mean_confusion_matrix, std_dev_confusion_matrix, classes)
+
+    # Save the plots in the specified directory
+    pio.write_image(metrics_plot, os.path.join(model_dir, 'metrics_plot.png'))
+    pio.write_image(conf_plot, os.path.join(model_dir, 'confusion_matrix_plot.png'))
 
     return metrics_plot, conf_plot, mean_precision, std_dev_precision, mean_recall, std_dev_recall, mean_f1, std_dev_f1, mean_accuracy, std_dev_accuracy
 
@@ -217,8 +230,6 @@ def plot_confusion_matrix(mean_confusion_matrix, std_dev_confusion_matrix, class
                       yaxis=dict(tickvals=list(range(len(classes))), ticktext=classes),
                       annotations=annotations)
     return fig
-
-
 
 
 def run_evidently_test(predictions_array, y_true):
