@@ -29,47 +29,47 @@ configurations:
     layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
     name: "Original"
 
-  config2:
-    kernel_widths: [20, 20, 6, 6, 6]
-    filters: [32, 32, 32, 32, 32]
-    dropouts: [0, 0, 0]
-    layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
-    name: "0"
+  # config2:
+  #   kernel_widths: [20, 20, 6, 6, 6]
+  #   filters: [32, 32, 32, 32, 32]
+  #   dropouts: [0, 0, 0]
+  #   layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
+  #   name: "0"
 
-  config3:
-    kernel_widths: [20, 20, 6, 6, 6]
-    filters: [32, 32, 32, 32, 32]
-    dropouts: [0.2, 0.2, 0.2]
-    layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
-    name: "0.2"
+  # config3:
+  #   kernel_widths: [20, 20, 6, 6, 6]
+  #   filters: [32, 32, 32, 32, 32]
+  #   dropouts: [0.2, 0.2, 0.2]
+  #   layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
+  #   name: "0.2"
 
-  config4:
-    kernel_widths: [20, 20, 6, 6, 6]
-    filters: [32, 32, 32, 32, 32]
-    dropouts: [0.4, 0.4, 0.4]
-    layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
-    name: "0.4"
+  # config4:
+  #   kernel_widths: [20, 20, 6, 6, 6]
+  #   filters: [32, 32, 32, 32, 32]
+  #   dropouts: [0.4, 0.4, 0.4]
+  #   layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
+  #   name: "0.4"
 
-  config5:
-    kernel_widths: [20, 20, 6, 6, 6]
-    filters: [32, 32, 32, 32, 32]
-    dropouts: [0.6, 0.6, 0.6]
-    layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
-    name: "0.6"
+  # config5:
+  #   kernel_widths: [20, 20, 6, 6, 6]
+  #   filters: [32, 32, 32, 32, 32]
+  #   dropouts: [0.6, 0.6, 0.6]
+  #   layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
+  #   name: "0.6"
 
-  config6:
-    kernel_widths: [20, 20, 6, 6, 6]
-    filters: [32, 32, 32, 32, 32]
-    dropouts: [0.2, 0.4, 0.6]
-    layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
-    name: "Asc"
+  # config6:
+  #   kernel_widths: [20, 20, 6, 6, 6]
+  #   filters: [32, 32, 32, 32, 32]
+  #   dropouts: [0.2, 0.4, 0.6]
+  #   layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
+  #   name: "Asc"
 
-  config7:
-    kernel_widths: [20, 20, 6, 6, 6]
-    filters: [32, 32, 32, 32, 32]
-    dropouts: [0.6, 0.4, 0.2]
-    layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
-    name: "Desc"
+  # config7:
+  #   kernel_widths: [20, 20, 6, 6, 6]
+  #   filters: [32, 32, 32, 32, 32]
+  #   dropouts: [0.6, 0.4, 0.2]
+  #   layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
+  #   name: "Desc"
 
 
 
