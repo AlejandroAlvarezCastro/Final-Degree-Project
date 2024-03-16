@@ -31,11 +31,12 @@ from tensorflow.keras.utils import plot_model
 from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
 
 
-def simulations(model_name, num_simulations, model, train_f, train_l, valid_f, valid_l, ass_f, ass_l):
+def simulations(yaml_file, model_name, num_simulations, model, train_f, train_l, valid_f, valid_l, ass_f, ass_l):
     """
     Performs simulations of neural network training and calculates performance metrics.
 
     Args:
+        yaml_file (str): Name of the yaml file where the configuration comes from.
         model_name (str): Name of the model.
         num_simulations (int): Number of simulations to perform.
         model (tf.keras.Model): Neural network model to train.
@@ -72,8 +73,13 @@ def simulations(model_name, num_simulations, model, train_f, train_l, valid_f, v
     confusion_matrices = []
 
     # Construct directory name
+    # resultados_dir = os.path.join(os.getcwd(), 'resultados')
+    # model_dir = os.path.join(resultados_dir, model_name)
     resultados_dir = os.path.join(os.getcwd(), 'resultados')
-    model_dir = os.path.join(resultados_dir, model_name)
+    yaml_name = os.path.splitext(os.path.basename(yaml_file))[0]
+    yaml_dir = os.path.join(resultados_dir, yaml_name)
+    model_dir = os.path.join(yaml_dir, model_name)
+
     # Create "resultados" directory if it doesn't exist
     os.makedirs(resultados_dir, exist_ok=True)
     # Create model directory
@@ -112,7 +118,7 @@ def simulations(model_name, num_simulations, model, train_f, train_l, valid_f, v
 
         # Train the model
         hist = model.fit(train_f, train_l, epochs=epochs, batch_size=BATCH_SIZE,
-                        validation_data=(valid_f, valid_l), callbacks=callbacksList) 
+                        validation_data=(valid_f, valid_l), callbacks=callbacksList)
 
         # Save training history
         with open(os.path.join(save_path, f"hist_{_}.pkl"), "wb") as file:
@@ -160,17 +166,17 @@ def simulations(model_name, num_simulations, model, train_f, train_l, valid_f, v
     std_dev_confusion_matrix = np.std(confusion_matrices, axis=0)
 
     # Print results
-    print("\nMean Precision:", mean_precision)
-    print("Mean Recall:", mean_recall)
-    print("Mean F1-score:", mean_f1)
-    print("Mean Accuracy:", mean_accuracy)
-    print("Mean Conf. Matrix", mean_confusion_matrix)
+    # print("\nMean Precision:", mean_precision)
+    # print("Mean Recall:", mean_recall)
+    # print("Mean F1-score:", mean_f1)
+    # print("Mean Accuracy:", mean_accuracy)
+    # print("Mean Conf. Matrix", mean_confusion_matrix)
 
-    print("\nStandard Deviation of Precision:", std_dev_precision)
-    print("Standard Deviation of Recall:", std_dev_recall)
-    print("Standard Deviation of F1-score:", std_dev_f1)
-    print("Standard Deviation of Accuracy:", std_dev_accuracy)
-    print("Standart Conf. Matrix", std_dev_confusion_matrix)
+    # print("\nStandard Deviation of Precision:", std_dev_precision)
+    # print("Standard Deviation of Recall:", std_dev_recall)
+    # print("Standard Deviation of F1-score:", std_dev_f1)
+    # print("Standard Deviation of Accuracy:", std_dev_accuracy)
+    # print("Standart Conf. Matrix", std_dev_confusion_matrix)
 
     # Save model summary as an image
     model_summary_img_path = os.path.join(model_dir, "model_summary.png")
@@ -182,8 +188,8 @@ def simulations(model_name, num_simulations, model, train_f, train_l, valid_f, v
     conf_plot = plot_confusion_matrix(mean_confusion_matrix, std_dev_confusion_matrix, classes)
 
     # Save the plots in the specified directory
-    pio.write_image(metrics_plot, os.path.join(model_dir, 'metrics_plot.png'))
-    pio.write_image(conf_plot, os.path.join(model_dir, 'confusion_matrix_plot.png'))
+    pio.write_image(metrics_plot, os.path.join(model_dir, f'metrics_{str(yaml_file)}_{str(model_name)}_plot.png'))
+    pio.write_image(conf_plot, os.path.join(model_dir, f'confusion_matrix_{str(yaml_file)}_{str(model_name)}_plot.png'))
 
     # return metrics_plot, conf_plot, mean_precision, std_dev_precision, mean_recall, std_dev_recall, mean_f1, std_dev_f1, mean_accuracy, std_dev_accuracy
     return metrics_plot, conf_plot

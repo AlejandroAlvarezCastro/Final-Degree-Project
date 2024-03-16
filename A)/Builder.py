@@ -60,7 +60,7 @@ class ConvNetBuilder:
             elif layer_type == 'N':  # Normalization layer
                 model.add(tf.keras.layers.BatchNormalization())
             elif layer_type == 'P':  # Pooling layer
-                model.add(tf.keras.layers.MaxPooling1D(pool_size=2))
+                model.add(tf.keras.layers.AveragePooling1D(pool_size=2))
             elif layer_type == 'flatten':  # Flatten layer
                 model.add(tf.keras.layers.Flatten())
             elif layer_type == 'D':  # Dropout layer

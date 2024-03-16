@@ -1,0 +1,78 @@
+# """
+# Configuration parameters for defining neural network models.
+
+# Each configuration consists of the following parameters:
+
+# kernel_widths (list): List of integers specifying the width of the convolutional kernels for each convolutional layer.
+
+# filters (list): List of integers specifying the number of filters for each convolutional layer.
+
+# dropouts (list): List of floats specifying the dropout rates for each dropout layer.
+
+# layer_types (list):List specifying the types of layers to be included in the network.
+# Each element represents a layer and can be one of the following:
+#   - 'C': Convolutional layer
+#   - 'N': Normalization layer
+#   - 'P': Pooling layer
+#   - 'flatten': Flatten layer
+#   - 'F': Dense layer
+#   - 'D': Dropout layer
+#   - Integers: Representing the number of neurons in the dense layers.
+
+# name (str): Name of the model.
+# """
+configurations:
+  config1:
+    kernel_widths: [20, 20, 6, 6, 6]
+    filters: [32, 32, 32, 32, 32]
+    dropouts: [0.4, 0.4, 0.4]
+    layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
+    name: "Original"
+
+  config2:
+    kernel_widths: [20, 20, 6, 6, 6]
+    filters: [40, 40, 40, 40, 40]
+    dropouts: [0.4, 0.4, 0.4]
+    layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
+    name: "40"
+
+  config3:
+    kernel_widths: [20, 20, 6, 6, 6]
+    filters: [50, 50, 50, 50, 50]
+    dropouts: [0.4, 0.4, 0.4]
+    layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
+    name: "50"
+
+  config4:
+    kernel_widths: [20, 20, 6, 6, 6]
+    filters: [25, 25, 25, 25, 25]
+    dropouts: [0.4, 0.4, 0.4]
+    layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
+    name: "25"
+
+  config5:
+    kernel_widths: [20, 20, 6, 6, 6]
+    filters: [10, 10, 10, 10, 10]
+    dropouts: [0.4, 0.4, 0.4]
+    layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
+    name: "10"
+
+  config6:
+    kernel_widths: [20, 20, 6, 6, 6]
+    filters: [50, 40, 30, 20, 10]
+    dropouts: [0.4, 0.4, 0.4]
+    layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
+    name: "Desc"
+
+  config7:
+    kernel_widths: [20, 20, 6, 6, 6]
+    filters: [10, 20, 30, 40, 50]
+    dropouts: [0.4, 0.4, 0.4]
+    layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
+    name: "Desc"
+
+
+
+
+
+
