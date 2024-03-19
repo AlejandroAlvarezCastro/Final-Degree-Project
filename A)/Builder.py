@@ -34,12 +34,21 @@ class ConvNetBuilder:
             raise ValueError("The number of integer values at the end of the layer_types list must be equal to the number of dense layers.")
 
     def find_integer_indices(self):
+        """
+        Identifies the indices of integer elements in the layer_types list.
+        """
         # Iterate over the layer_types list and obtain the indices of the integer elements
         for i, element in enumerate(self.layer_types):
             if isinstance(element, int):
                 self.integer_indices.append(i)
 
     def build_model(self):
+        """
+        Constructs a TensorFlow Sequential model based on the provided architecture specifications.
+
+        Returns:
+            tuple: A tuple containing the constructed TensorFlow model and its name.
+        """
         model = tf.keras.Sequential()
 
         self.find_integer_indices()  # Calculate the indices of integer elements
