@@ -70,7 +70,12 @@ class Preprocessor:
             for i in range(features.shape[0]):
                 image = features[i]
 
-                # Process the image similar to the training set
+                # Process the image to match the size and format desired:
+                # - Repeat the image horizontally to fill the desired width
+                # - Resize the image to the desired square size (keeping aspect ratio)
+                # - Scale the pixel values to the range [0, 255]
+                # - Clip pixel values to ensure they are within the valid range
+                # - Convert the image to grayscale by casting to uint8
                 repetition_factor = int(np.ceil(new_size_y / image.shape[1])) 
                 repeated_image = np.repeat(image, repetition_factor, axis=1)
                 resized_image = repeated_image[:, :new_size_y]
