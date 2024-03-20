@@ -1,10 +1,7 @@
-train: C:/Users/alexm/OneDrive/Escritorio/UNIVERSIDAD/TFG/ALVAREZ_CASTRO_Alejandro/ALVAREZ_CASTRO_Alejandro/repo/DQ_ACA_2024/B)/data/train/images
-val: C:/Users/alexm/OneDrive/Escritorio/UNIVERSIDAD/TFG/ALVAREZ_CASTRO_Alejandro/ALVAREZ_CASTRO_Alejandro/repo/DQ_ACA_2024/B)/data/validation/images
-test: C:/Users/alexm/OneDrive/Escritorio/UNIVERSIDAD/TFG/ALVAREZ_CASTRO_Alejandro/ALVAREZ_CASTRO_Alejandro/repo/DQ_ACA_2024/B)/data/test/images
-assess: C:/Users/alexm/OneDrive/Escritorio/UNIVERSIDAD/TFG/ALVAREZ_CASTRO_Alejandro/ALVAREZ_CASTRO_Alejandro/repo/DQ_ACA_2024/B)/data/assess/images
+train: C:/Users/alexm/OneDrive/Escritorio/UNIVERSIDAD/TFG/ALVAREZ_CASTRO_Alejandro/ALVAREZ_CASTRO_Alejandro/repo/DQ_ACA_2024/B)/data/train/features
+valid: C:/Users/alexm/OneDrive/Escritorio/UNIVERSIDAD/TFG/ALVAREZ_CASTRO_Alejandro/ALVAREZ_CASTRO_Alejandro/repo/DQ_ACA_2024/B)/data/validation/features
+test: C:/Users/alexm/OneDrive/Escritorio/UNIVERSIDAD/TFG/ALVAREZ_CASTRO_Alejandro/ALVAREZ_CASTRO_Alejandro/repo/DQ_ACA_2024/B)/data/test/features
+assess: C:/Users/alexm/OneDrive/Escritorio/UNIVERSIDAD/TFG/ALVAREZ_CASTRO_Alejandro/ALVAREZ_CASTRO_Alejandro/repo/DQ_ACA_2024/B)/data/assess/features
 
-# Number of classes
 nc: 2
-
-# Class names
 names: ['OK', 'NOK']
