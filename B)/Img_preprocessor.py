@@ -50,7 +50,7 @@ class Preprocessor:
             os.makedirs(dataset_dir, exist_ok=True)
 
             # Create directory for features and labels
-            features_dir = os.path.join(dataset_dir, 'features')
+            features_dir = os.path.join(dataset_dir, 'images')
             labels_dir = os.path.join(dataset_dir, 'labels')
             os.makedirs(features_dir, exist_ok=True)
             os.makedirs(labels_dir, exist_ok=True)
