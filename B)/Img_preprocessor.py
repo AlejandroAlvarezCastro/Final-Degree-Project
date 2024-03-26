@@ -29,7 +29,7 @@ class Preprocessor:
         self.npzfile_test = npzfile_test
         self.npzfile_assess = npzfile_assess
     
-    def preprocess(self, goal_preprocessed):
+    def preprocess(self, goal_preprocessed, NUM_IMAGES_TO_VISUALIZE_PREPROCESS=None):
         """
         Preprocesses the image data and saves the processed images and labels.
 
@@ -71,13 +71,13 @@ class Preprocessor:
                 image = features[i]
 
                 # Process the image to match the size and format desired:
-                # - Repeat the image horizontally to fill the desired width
+                # - Repeat each pixel separately the number of times determined by the repetition factor
                 # - Resize the image to the desired square size (keeping aspect ratio)
                 # - Scale the pixel values to the range [0, 255]
                 # - Clip pixel values to ensure they are within the valid range
                 # - Convert the image to grayscale by casting to uint8
                 repetition_factor = int(np.ceil(new_size_y / image.shape[1])) 
-                repeated_image = np.repeat(image, repetition_factor, axis=1)
+                repeated_image = np.repeat(image, repetition_factor, axis=1)  # np.repeat --> Repeat each element of an array after themselves
                 resized_image = repeated_image[:, :new_size_y]
                 scaled_image = (resized_image + 1) * 127.5
                 scaled_image = np.clip(scaled_image, 0, 255)
@@ -85,7 +85,7 @@ class Preprocessor:
 
                 # Save image in features directory as PNG
                 image_file_name = f'image_{i}.png'
-                image_png = Image.fromarray(grayscale_image)
+                image_png = Image.fromarray(grayscale_image.T)
                 image_png.save(os.path.join(features_dir, image_file_name))
 
                 # Create and save label in labels directory
@@ -98,6 +98,32 @@ class Preprocessor:
                 with open(os.path.join(labels_dir, label_file_name), 'w') as file:
                     # Write class followed by normalized bounding box coordinates
                     file.write(f'{class_label} 0.5 0.5 1.0 1.0')  # Bounding box covers entire image
+
+                 # Visualize the first 7 images of the assess dataset
+                if NUM_IMAGES_TO_VISUALIZE_PREPROCESS is not None and dataset_name == 'assess' and i < NUM_IMAGES_TO_VISUALIZE_PREPROCESS:
+                    # Crear una figura y los subplots
+                    plt.figure(figsize=(40, 20))
+
+                    # Subplot 1: Imagen Original
+                    plt.subplot(NUM_IMAGES_TO_VISUALIZE_PREPROCESS, 3, i*3 + 1)
+                    plt.imshow(image, cmap='gray')
+                    plt.title(f'Image {i+1} Original')
+                    plt.axis('off')
+
+                    # Subplot 2: Imagen Procesada
+                    plt.subplot(NUM_IMAGES_TO_VISUALIZE_PREPROCESS, 3, i*3 + 2)
+                    plt.imshow(grayscale_image, cmap='gray')
+                    plt.title(f'Image {i+1} Preprocessed')
+                    plt.axis('off')
+
+                    # Subplot 3: Imagen Transpuesta
+                    plt.subplot(NUM_IMAGES_TO_VISUALIZE_PREPROCESS, 3, i*3 + 3)
+                    plt.imshow(grayscale_image.T, cmap='gray')
+                    plt.title(f'Image {i+1} Transposed')
+                    plt.axis('off')
+
+                    plt.tight_layout()
+                    plt.show()
 
     def visualize_first_image_assess(self, features_dir_assess, labels_dir_assess):
         """
