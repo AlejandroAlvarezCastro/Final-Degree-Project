@@ -79,9 +79,9 @@ class Preprocessor:
                 repetition_factor = int(np.ceil(new_size_y / image.shape[1])) 
                 repeated_image = np.repeat(image, repetition_factor, axis=1)  # np.repeat --> Repeat each element of an array after themselves
                 resized_image = repeated_image[:, :new_size_y]
-                scaled_image = (resized_image + 1) * 127.5
-                scaled_image = np.clip(scaled_image, 0, 255)
-                grayscale_image = scaled_image.astype(np.uint8)
+                trasladado = resized_image + 1
+                escalado = (trasladado / 2) * 255   # Scale values in the range [-1, 1] -> [0, 255]
+                grayscale_image = escalado.astype(np.uint8)
 
                 # Save image in features directory as PNG
                 image_file_name = f'image_{i}.png'
