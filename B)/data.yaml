@@ -1,7 +1,0 @@
-train: C:/Users/alexm/OneDrive/Escritorio/UNIVERSIDAD/TFG/ALVAREZ_CASTRO_Alejandro/ALVAREZ_CASTRO_Alejandro/repo/DQ_ACA_2024/B)/data/train/features
-valid: C:/Users/alexm/OneDrive/Escritorio/UNIVERSIDAD/TFG/ALVAREZ_CASTRO_Alejandro/ALVAREZ_CASTRO_Alejandro/repo/DQ_ACA_2024/B)/data/validation/features
-test: C:/Users/alexm/OneDrive/Escritorio/UNIVERSIDAD/TFG/ALVAREZ_CASTRO_Alejandro/ALVAREZ_CASTRO_Alejandro/repo/DQ_ACA_2024/B)/data/test/features
-assess: C:/Users/alexm/OneDrive/Escritorio/UNIVERSIDAD/TFG/ALVAREZ_CASTRO_Alejandro/ALVAREZ_CASTRO_Alejandro/repo/DQ_ACA_2024/B)/data/assess/features
-
-nc: 2
-names: ['OK', 'NOK']
