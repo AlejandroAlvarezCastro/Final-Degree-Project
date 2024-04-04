@@ -27,7 +27,6 @@ def main():
         print(f"Training model for configuration: {config['name']}")
         train(config)
         
-        # Assuming you have a way to find the path to the best weights dynamically
         best_weights_path = f"runs/train/{config['name']}/weights/best.pt"
         
         print(f"Testing model for configuration: {config['name']}")
