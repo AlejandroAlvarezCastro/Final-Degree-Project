@@ -1,0 +1,17 @@
+configurations:
+  - name: config1
+    batch_size: 16
+    epochs: 50
+    data_train: "/home/aacastro/Alejandro/DQ_ACA_2024/B)/data_train.yaml"
+    data_test: "/home/aacastro/Alejandro/DQ_ACA_2024/B)/data_test.yaml"
+    weights: "yolov7.pt"
+    freeze: 75
+    device: "0"
+  - name: config2
+    batch_size: 16
+    epochs: 50
+    data_train: "/home/aacastro/Alejandro/DQ_ACA_2024/B)/data_train.yaml"
+    data_test: "/home/aacastro/Alejandro/DQ_ACA_2024/B)/data_test.yaml"
+    weights: "yolov7.pt"
+    freeze: 50
+    device: "0"
