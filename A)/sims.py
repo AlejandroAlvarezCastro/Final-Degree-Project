@@ -190,9 +190,9 @@ for k in range(0, len(config_items), NUM_FOLDERS):
             ws.add_report(project.id, classification_performance_report)
 
             # Saving the report in JSON format
-            nombre_archivo = f"datos_model_{name}_iteration_{i}.json"
+            nombre_archivo_rep = f"datos_model_{name}_iteration_{i}.json"
             directorio = "/home/aacastro/Alejandro/DQ_ACA_2024/A)/jsons/"
-            ruta_completa = os.path.join(directorio, nombre_archivo)
+            ruta_completa = os.path.join(directorio, nombre_archivo_rep)
             json_data = classification_performance_report.json()
             classification_performance_report.save(ruta_completa)
 
@@ -231,7 +231,9 @@ for k in range(0, len(config_items), NUM_FOLDERS):
                 ws.add_test_suite(project_id='773856a9-b047-46c8-8c58-be21716e9369', test_suite=binary_classification_performance)
 
                 # Saving the test suite results in json format
-                with open(f'test_suite_{name}_iteration_{i}_{threshold}.json', 'w') as file:
+                nombre_archivo_test = f'test_suite_{name}_iteration_{i}_threshold_{threshold}.json'
+                ruta_completa_test = os.path.join(directorio, nombre_archivo_test)
+                with open(ruta_completa_test, 'w') as file:
                     json.dump(binary_classification_performance.as_dict(), file, indent=4)
 
             # Storing metrics for this model in this simulation
