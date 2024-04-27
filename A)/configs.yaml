@@ -1,0 +1,124 @@
+# """
+# Configuration parameters for defining neural network models.
+
+# Each configuration consists of the following parameters:
+
+# kernel_widths (list): List of integers specifying the width of the convolutional kernels for each convolutional layer.
+
+# filters (list): List of integers specifying the number of filters for each convolutional layer.
+
+# dropouts (list): List of floats specifying the dropout rates for each dropout layer.
+
+# layer_types (list):List specifying the types of layers to be included in the network.
+# Each element represents a layer and can be one of the following:
+#   - 'C': Convolutional layer
+#   - 'N': Normalization layer
+#   - 'P': Pooling layer
+#   - 'flatten': Flatten layer
+#   - 'F': Dense layer
+#   - 'D': Dropout layer
+#   - Integers: Representing the number of neurons in the dense layers.
+
+# name (str): Name of the model.
+
+# tags (list): Tags to add to the model
+
+# metadata (dict): Metadata to add to the model
+# """
+
+configurations:
+  config1:
+    kernel_widths: [20, 20, 6, 6, 6]
+    filters: [32, 32, 32, 32, 32]
+    dropouts: [0.4, 0.4, 0.4]
+    layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
+    name: "Original"
+    tags: ['prueba', 'prueba2']
+    metadata: {'epochs': 50, 'batch_size': 32}
+
+  config2:
+    kernel_widths: [20, 20, 6, 6, 6]
+    filters: [32, 32, 32, 32, 32]
+    dropouts: [0, 0, 0]
+    layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
+    name: "0"
+    tags: ['prueba', 'prueba2']
+    metadata: {'epochs': 50, 'batch_size': 32}
+
+  config3:
+    kernel_widths: [20, 20, 6, 6, 6]
+    filters: [32, 32, 32, 32, 32]
+    dropouts: [0.2, 0.2, 0.2]
+    layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
+    name: "0.2"
+    tags: ['prueba', 'prueba2']
+    metadata: {'epochs': 50, 'batch_size': 32, 'filters': 20}
+
+  config4:
+    kernel_widths: [20, 20, 6, 6, 6]
+    filters: [32, 32, 32, 32, 32]
+    dropouts: [0.4, 0.4, 0.4]
+    layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
+    name: "0.4"
+    tags: ['prueba', 'prueba2']
+    metadata: {'epochs': 50, 'batch_size': 100}
+
+  config5:
+    kernel_widths: [20, 20, 6, 6, 6]
+    filters: [32, 32, 32, 32, 32]
+    dropouts: [0.6, 0.6, 0.6]
+    layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
+    name: "0.6"
+    tags: ['prueba', 'prueba2']
+    metadata: {'epochs': 600, 'batch_size': 32}
+
+  config6:
+    kernel_widths: [20, 20, 6, 6, 6]
+    filters: [32, 32, 32, 32, 32]
+    dropouts: [0.2, 0.4, 0.6]
+    layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
+    name: "Asc"
+    tags: ['prueba', 'prueba2']
+    metadata: {'epochs': 50, 'batch_size': 32}
+
+  config7:
+    kernel_widths: [20, 20, 6, 6, 6]
+    filters: [32, 32, 32, 32, 32]
+    dropouts: [0.6, 0.4, 0.2]
+    layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
+    name: "Desc"
+    tags: ['prueba', 'prueba2']
+    metadata: {'epochs': 50, 'batch_size': 32}
+
+  config8:
+    kernel_widths: [20, 20, 6, 6, 6]
+    filters: [50, 50, 50, 50, 50]
+    dropouts: [0.4, 0.4, 0.4]
+    layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
+    name: "50"
+    tags: ['prueba', 'prueba2']
+    metadata: {'epochs': 50, 'batch_size': 32}
+
+  config9:
+    kernel_widths: [10, 10, 10, 10, 10]
+    filters: [32, 32, 32, 32, 32]
+    dropouts: [0.4, 0.4, 0.4]
+    layer_types: ['C', 'C', 'N', 'C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 256, 128, 32, 2]
+    name: "10"
+    tags: ['prueba', 'prueba2']
+    metadata: {'epochs': 50, 'batch_size': 32}
+
+  config10:
+    kernel_widths: [20, 20, 6, 6, 6]
+    filters: [32, 32, 32, 32, 32]
+    dropouts: [0.6, 0.4, 0.2]
+    layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
+    name: "ultimo"
+    tags: ['prueba', 'prueba2']
+    metadata: {'epochs': 50, 'batch_size': 32}
+
+
+
+
+
+
