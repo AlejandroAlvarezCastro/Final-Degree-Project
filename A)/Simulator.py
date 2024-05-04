@@ -13,6 +13,7 @@ from CustomReport import CustomReport
 from sklearn.metrics import precision_score, recall_score, f1_score, confusion_matrix, roc_auc_score
 from sklearn.model_selection import KFold
 
+from evidently.ui.workspace.cloud import CloudWorkspace
 from evidently.metric_preset import ClassificationPreset
 from evidently.test_suite import TestSuite
 from evidently.tests import *
@@ -26,8 +27,7 @@ class Simulator:
     Class to simulate model training and evaluate performance metrics.
 
     Attributes:
-        ws (evidently.ui.workspace.cloud.CloudWorkSpace): Cloud workspace to upload reports and tests.
-        project (str): Project on cloud workspace.
+        yaml_path (str): Path to the yaml with the information.
         X (numpy.ndarray): Features.
         Y (numpy.ndarray): Labels.
         ass_f (numpy.ndarray): Features for model assessment.
@@ -41,16 +41,15 @@ class Simulator:
         plot_confusion_matrix(mean_confusion_matrix, std_dev_confusion_matrix, classes): Plots confusion matrix.
         perform_test_suite(df, tags, metadata, modelo_folder): Performs a Test Suite on data.
         perform_custom_report(model, config_name, df, simulation_date_folder, tags, metadata, fold_no, i): Performs a custom report on data.
+        SetUp_CloudWorkSpace(path): Sets up the cloud working space environment
     """
-    def __init__(self, ws, project, X, Y, ass_f, ass_l, verbose=0):
+    def __init__(self, yaml_path, X, Y, ass_f, ass_l, verbose=0):
         self.X = X
         self.Y = Y
         self.ass_f = ass_f
         self.ass_l = ass_l
-        self.ws = ws
-        self.project_id = project.id
+        self.yaml_path = yaml_path
         self.verbose = verbose
-
         self.SAVE_PERIOD = 1
         self.learning_rate = 2e-4
         self.BATCH_SIZE = 50
@@ -78,6 +77,10 @@ class Simulator:
                 patience=25, # number of epochs to stop training
                 restore_best_weights=True, # set if use best weights or last weights
                 )
+        
+        # Setting up the cloud working space environment
+        self.ws, self.project_id = self.SetUp_CloudWorkSpace(yaml_path)
+        
 
     def simulate(self, NUM_SIMULATIONS, NUM_FOLDERS, results_base_directory):
         """
@@ -90,20 +93,38 @@ class Simulator:
             tuple: Tuple containing plots of performance metrics and confusion matrix.
         """
         # Cargar configuraciones desde un archivo YAML
-        with open('/home/aacastro/Alejandro/DQ_ACA_2024/A)/configs.yaml') as file:  # CAMBIAR RUTA
-            configurations = yaml.safe_load(file)
+        yaml_content = self.load_yaml(self.yaml_path)
+
+        models = self.build_models(yaml_content['configurations'], yaml_content['architectures'])
 
         # Inicializar diccionario para almacenar métricas de los modelos
         models_metrics = {}
 
-        # Iterar a través de las configuraciones
-        for config_name, config_params in configurations['configurations'].items():
+        # Iterar sobre los modelos construidos
+        for k in range(len(models)):
+            model_name, model, tags, metadata, thresholds = models[k]
             if self.verbose >= 1:
-                print(f"Iniciando configuración: '{config_name}'...")
+                print(f"Iniciando modelo: '{model_name}'...")
             start_time = time.time()  # Tiempo de inicio para esta configuración
 
-            # Diccionario para almacenar métricas para esta configuración
-            config_metrics = {}
+            # Inicializar el diccionario para almacenar las métricas detalladamente
+            detailed_metrics = {}
+            for sim in range(1, NUM_SIMULATIONS + 1):
+                detailed_metrics[f'sim_{sim}'] = {}
+
+                for fold in range(1, NUM_FOLDERS + 1):
+                    detailed_metrics[f'sim_{sim}'][f'fold_{fold}'] = {
+                        'metrics': {
+                            'f1_score': [],
+                            'recall': [],
+                            'precision': [],
+                            'roc_auc': [],
+                            'confusion_matrix': []
+                        },
+                        'training_indexes': None,
+                        'test_indexes': None}
+
+            print("Detailed metrics vacio: ", detailed_metrics)
 
             # Iterar a través de las simulaciones
             for i in range(NUM_SIMULATIONS):
@@ -113,9 +134,6 @@ class Simulator:
                 # Crear la carpeta de la fecha de la simulación
                 simulation_date_folder = os.path.join(results_base_directory, f"fecha_simulacion_{time.strftime('%Y%m%d')}")
                 os.makedirs(simulation_date_folder, exist_ok=True)
-                
-                # Diccionario para almacenar métricas para cada división en la simulación
-                metrics_per_simulation = {"f1_score": [], "recall": [], "precision": [], "roc_auc": [], "confusion_matrix": []}
 
                 # Configurar validación cruzada K-Fold
                 kf = KFold(n_splits=NUM_FOLDERS, shuffle=True)
@@ -124,11 +142,8 @@ class Simulator:
                 for fold_no, (train, test) in enumerate(kf.split(self.X, self.Y), 1):
                     if self.verbose >= 2:
                         print(f"Iniciando división {fold_no}...")
-
-                    # Construir el modelo utilizando parámetros de configuración
-                    builder = ConvNetBuilder(**config_params)
-                    model, tags, metadata = builder.build_model()
-
+                    
+                    metadata = metadata
                     metadata['num_iteration'] = i + 1
                     metadata['folder'] = fold_no 
 
@@ -148,14 +163,18 @@ class Simulator:
                     df_cur = pd.DataFrame({'target': yTestClassT, 'prediction': pred_prob})
 
                     # Ejecutar un informe de rendimiento de clasificación personalizado
-                    modelo_folder, configuration_folder = self.perform_custom_report(model, config_name, df_cur, simulation_date_folder, tags, metadata, fold_no, i)
+                    modelo_folder, configuration_folder = self.perform_custom_report(model, model_name, df_cur, simulation_date_folder, tags, metadata, fold_no, i)
+
+                    # Almacenar los índices de las muestras de entrenamiento y prueba en el diccionario
+                    detailed_metrics[f'sim_{i+1}'][f"fold_{fold_no}"]["training_indexes"] = train
+                    detailed_metrics[f'sim_{i+1}'][f"fold_{fold_no}"]["test_indexes"] = test
 
                     # Calcular métricas adicionales
-                    metrics_per_simulation["f1_score"].append(f1_score(yTestClassT, y_pred_labels))
-                    metrics_per_simulation["recall"].append(recall_score(yTestClassT, y_pred_labels))
-                    metrics_per_simulation["precision"].append(precision_score(yTestClassT, y_pred_labels))
-                    metrics_per_simulation["roc_auc"].append(roc_auc_score(yTestClassT, pred_prob))
-                    metrics_per_simulation["confusion_matrix"].append(confusion_matrix(yTestClassT, y_pred_labels))
+                    detailed_metrics[f'sim_{i+1}'][f"fold_{fold_no}"]["metrics"]["f1_score"].append(f1_score(yTestClassT, y_pred_labels))
+                    detailed_metrics[f'sim_{i+1}'][f"fold_{fold_no}"]["metrics"]["recall"].append(recall_score(yTestClassT, y_pred_labels))
+                    detailed_metrics[f'sim_{i+1}'][f"fold_{fold_no}"]["metrics"]["precision"].append(precision_score(yTestClassT, y_pred_labels))
+                    detailed_metrics[f'sim_{i+1}'][f"fold_{fold_no}"]["metrics"]["roc_auc"].append(roc_auc_score(yTestClassT, pred_prob))
+                    detailed_metrics[f'sim_{i+1}'][f"fold_{fold_no}"]["metrics"]["confusion_matrix"].append(confusion_matrix(yTestClassT, y_pred_labels))
 
                     # Predict on the independent set.
                     ypredt_ass = model.predict(self.ass_f)
@@ -164,59 +183,61 @@ class Simulator:
                     df_cur_ass = pd.DataFrame({'target':yTestClassT_ass, 'prediction': pred_prob_ass})
 
                     # Performing Test Suite evaluation with different thresholds
-                    self.perform_test_suite(df_cur_ass, tags, metadata, modelo_folder)
+                    self.perform_test_suite(df_cur_ass, tags, metadata, modelo_folder, thresholds)
 
-                # Calcular la media y la desviación estándar de las métricas para esta simulación
-                average_metrics = {}
-                for metric, values in metrics_per_simulation.items():
-                    mean_metric = np.mean(values, axis=0)
-                    std_dev_metric = np.std(values, axis=0)
-                    average_metrics[metric] = {"mean": mean_metric, "std_dev": std_dev_metric}
+            if self.verbose >= 3:
+                print(f"Detailed metrics for config {model_name}: ", detailed_metrics)
 
-                # Almacenar métricas para esta simulación
-                config_metrics[i] = average_metrics
-                if self.verbose >= 3:
-                    print(f"Config Metrics: {i} {config_metrics[i]}")
+            path_detailed_metrics = os.path.join(configuration_folder, f'detailed_metrics.json')
+            with open(path_detailed_metrics, 'w') as file:
+                json.dump(detailed_metrics, file, default=self.convert_ndarray_to_list, indent=4)
 
-            # Calcular la media y la desviación estándar de las métricas para esta configuración
-            average_config_metrics = {}
-            # Iterar sobre las métricas en el diccionario existente
-            for metric in config_metrics[0].keys():
-                mean_of_means = np.mean([config_metrics[simulation][metric]['mean'] for simulation in config_metrics.keys()], axis=0)
-                mean_of_std_devs = np.mean([config_metrics[simulation][metric]['std_dev'] for simulation in config_metrics.keys()], axis=0)
-                
-                # Almacenar las medias de las medias y las medias de las desviaciones estándar en el nuevo diccionario
-                average_config_metrics[metric] = {'mean': mean_of_means, 'std_dev': mean_of_std_devs}
+            statistics = self.calculate_metrics_statistics(detailed_metrics)
 
-            # Almacenar métricas para esta configuración
-            models_metrics[config_name] = average_config_metrics
+            # Almacenar métricas estadísticas para esta configuración
+            models_metrics[model_name] = statistics
 
-            conf_plot = self.plot_confusion_matrix(models_metrics[config_name]['confusion_matrix']['mean'], models_metrics[config_name]['confusion_matrix']['std_dev'], self.classes)
-            pio.write_image(conf_plot, os.path.join(configuration_folder, f'confusion_matrix_{config_name}_plot.png'))
+            # Imprimir los resultados
+            if self.verbose >= 3:
+                print(f"Valores medios de las métricas para la configuración {model_name}: ")
+                for metric_name, values in statistics.items():  
+                    print(f"Métrica: {metric_name}")
+                    print(f"\tMedia: {values['mean']}")
+                    print(f"\tDesviación Estándar: {values['std_dev']}")
+                    print()
+
+            conf_plot = self.plot_confusion_matrix(models_metrics[model_name]['confusion_matrix']['mean'], models_metrics[model_name]['confusion_matrix']['std_dev'], self.classes, NUM_SIMULATIONS)
+            pio.write_image(conf_plot, os.path.join(configuration_folder, f'confusion_matrix_{model_name}_plot.png'))
 
             end_time = time.time()  # Tiempo de fin para esta configuración
             elapsed_time = end_time - start_time  # Calcular tiempo transcurrido
-            models_metrics[config_name]['execution_time'] = elapsed_time  # Almacenar tiempo transcurrido para esta configuración
+            models_metrics[model_name]['execution_time'] = elapsed_time  # Almacenar tiempo transcurrido para esta configuración
             if self.verbose >= 2:
-                print(f"Tiempo de ejecución para configuración '{config_name}': {elapsed_time} segundos")
+                print(f"Tiempo de ejecución para configuración '{model_name}': {elapsed_time} segundos")
 
         return models_metrics
 
 
-    def calculate_statistics(self, metrics_list):
-        """
-        Calculates the mean and standard deviation of a list of metrics.
+    # Función para calcular la media y la desviación estándar de las métricas
+    def calculate_metrics_statistics(self, metrics_per_config):
+        metrics_values = {}
 
-        Args:
-            metrics_list (list): List of metrics.
+        for sim, folds in metrics_per_config.items():
+            for fold, metrics in folds.items():
+                for metric_name, metric_values in metrics['metrics'].items():
+                    if metric_name not in metrics_values:
+                        metrics_values[metric_name] = []
 
-        Returns:
-            tuple: Mean and standard deviation of the metrics.
-        """
-        metrics_array = np.array(metrics_list)
-        mean_metrics = np.mean(metrics_array, axis=0)
-        std_dev_metrics = np.std(metrics_array, axis=0)
-        return mean_metrics, std_dev_metrics
+                    metrics_values[metric_name].extend(metric_values)
+
+        # Calcular la media y la desviación estándar para cada métrica
+        metrics_mean_std = {}
+        for metric_name, values in metrics_values.items():
+            mean = np.mean(values, axis=0)
+            std = np.std(values, axis=0)
+            metrics_mean_std[metric_name] = {'mean': mean, 'std_dev': std}
+
+        return metrics_mean_std
 
     def plot_metrics(self, mean_precision, std_dev_precision, mean_recall, std_dev_recall, mean_f1, std_dev_f1, classes):
         """
@@ -260,7 +281,7 @@ class Simulator:
 
         return fig
 
-    def plot_confusion_matrix(self, mean_confusion_matrix, std_dev_confusion_matrix, classes):
+    def plot_confusion_matrix(self, mean_confusion_matrix, std_dev_confusion_matrix, classes, NUM_SIMULATIONS):
         """
         Plots the confusion matrix.
 
@@ -272,13 +293,19 @@ class Simulator:
         Returns:
             plotly.graph_objects.Figure: Plotly figure object.
         """
+
+        total_samples = np.sum(mean_confusion_matrix)
+
+        mean_confusion_matrix_percent = (mean_confusion_matrix / total_samples) * 100
+        std_dev_confusion_matrix_percent = (std_dev_confusion_matrix / total_samples) * 100
+
         fig = go.Figure(data=go.Heatmap(
-            z=mean_confusion_matrix,
-            zmin=mean_confusion_matrix.min(),
-            zmax=mean_confusion_matrix.max(),
-            hoverongaps=False,
-            colorscale='Blues',
-            colorbar=dict(title='Count')))
+        z=mean_confusion_matrix_percent,
+        zmin=0,
+        zmax=100,
+        hoverongaps=False,
+        colorscale='Blues',
+        colorbar=dict(title='Percentage')))
 
         annotations = []
 
@@ -287,7 +314,7 @@ class Simulator:
                 annotation = {
                     'x': j,
                     'y': i,
-                    'text': f"{mean_confusion_matrix[i, j]:.2f} ± {std_dev_confusion_matrix[i, j]:.2f}",
+                    'text': f"{mean_confusion_matrix_percent[i, j]:.2f}% ± {std_dev_confusion_matrix_percent[i, j]:.2f}%",
                     'showarrow': False,
                     'font': {'color': 'black'}
                 }
@@ -295,13 +322,21 @@ class Simulator:
 
         fig.update_layout(
             title='Confusion Matrix (Mean +/- Standard Deviation)',
-            xaxis=dict(tickvals=list(range(len(classes))), ticktext=classes),
-            yaxis=dict(tickvals=list(range(len(classes))), ticktext=classes),
+            xaxis=dict(title='Predicted Labels', tickvals=list(range(len(classes))), ticktext=classes),
+            yaxis=dict(title='True Labels', tickvals=list(range(len(classes))), ticktext=classes),
             annotations=annotations)
+        
+        fig.add_annotation(
+            text=f"Total samples\nin {NUM_SIMULATIONS} iterations: {total_samples*NUM_SIMULATIONS}",
+            xref="paper", yref="paper",
+            x=1.2, y=1.2,
+            showarrow=False,
+            font=dict(size=12),
+            align='right')
 
         return fig
     
-    def perform_test_suite(self, df, tags, metadata, modelo_folder):
+    def perform_test_suite(self, df, tags, metadata, modelo_folder, thresholds):
         """
         Performs evaluation using a test suite for different thresholds.
 
@@ -314,7 +349,7 @@ class Simulator:
         Returns:
             None
         """
-        thresholds = [0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9]
+        # thresholds = [0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9]
         for threshold in thresholds:
             binary_classification_performance = TestSuite(tests=[TestPrecisionScore(gte=threshold), 
                                                                     TestRecallScore(gte=threshold), 
@@ -357,7 +392,7 @@ class Simulator:
         self.ws.add_report(self.project_id, classification_performance_report)
 
         # Guardar el informe en formato JSON
-        configuration_folder = os.path.join(simulation_date_folder, f"configuration_{config_name}")
+        configuration_folder = os.path.join(simulation_date_folder, f"model_{config_name}")
         os.makedirs(configuration_folder, exist_ok=True)
         iteration_folder = os.path.join(configuration_folder, f"iteration_{i+1}")
         os.makedirs(iteration_folder, exist_ok=True)
@@ -375,3 +410,49 @@ class Simulator:
         model.save(save_path_model)
 
         return modelo_folder, configuration_folder
+    
+    def SetUp_CloudWorkSpace(self, path):
+        # Cargar configuraciones desde un archivo YAML
+        with open(path, 'r') as file:
+            yaml_content = yaml.safe_load(file)
+        
+        evidently_config = yaml_content.get('evidently', {})
+        token = evidently_config.get('token', None)
+        url = evidently_config.get('url', None)
+        project_id = evidently_config.get('project_id', None)
+
+        ws = CloudWorkspace(token=token, url=url)
+
+        return ws, project_id
+    
+    # Definir una función para construir los modelos
+    def build_models(self, configurations, architectures):
+        models = []
+        for config_key, config in configurations.items():
+            for arch_key, arch in architectures.items():
+                # Crear una instancia de ConvNetBuilder para cada combinación de configuración y arquitectura
+                builder = ConvNetBuilder(
+                    kernel_widths=config['kernel_widths'],
+                    filters=config['filters'],
+                    dropouts=config['dropouts'],
+                    layer_types=arch,
+                    tags=config['tags'],
+                    metadata=config['metadata'],
+                    test_suite_thresholds=config['test_suite_thresholds']
+                )
+                # Construir el modelo y añadirlo a la lista de modelos
+                model, tags, metadata, test_suite_thresholds = builder.build_model()
+                model_name = f"{config_key}_{arch_key}"
+                models.append([model_name, model, tags, metadata, test_suite_thresholds])
+
+        return models
+
+    
+    def convert_ndarray_to_list(self, obj):
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return obj
+    
+    def load_yaml(self, filename):
+        with open(filename, 'r') as file:
+            return yaml.safe_load(file)
