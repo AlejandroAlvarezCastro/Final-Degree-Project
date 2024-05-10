@@ -7,8 +7,8 @@ import numpy as np
 import plotly.graph_objects as go
 import plotly.io as pio
 
-from Builder import ConvNetBuilder
-from CustomReport import CustomReport
+from CreateModel import ModelCreate
+from TrainConfig import TrainConfig
 
 from sklearn.metrics import precision_score, recall_score, f1_score, confusion_matrix, roc_auc_score
 from sklearn.model_selection import KFold
@@ -17,6 +17,7 @@ from evidently.ui.workspace.cloud import CloudWorkspace
 from evidently.metric_preset import ClassificationPreset
 from evidently.test_suite import TestSuite
 from evidently.tests import *
+from evidently.report import Report
 
 import keras
 import tensorflow as tf
@@ -50,33 +51,7 @@ class Simulator:
         self.ass_l = ass_l
         self.yaml_path = yaml_path
         self.verbose = verbose
-        self.SAVE_PERIOD = 1
-        self.learning_rate = 2e-4
-        self.BATCH_SIZE = 50
-        self.STEPS_PER_EPOCH = ((self.X.size)*0.8) / self.BATCH_SIZE
-        self.SAVE_PERIOD = 1
-        self.epochs = 100
-        self.loss = tf.keras.losses.categorical_crossentropy
-        self.optimizer = tf.keras.optimizers.Adam(learning_rate=self.learning_rate)
         self.classes = ['OK', 'NOK']
-        self.modelPath = os.path.join(os.getcwd(), 'ZN_1D_imgs/bestModel.keras')
-
-        self.checkpoint = ModelCheckpoint( # set model saving checkpoints
-                            self.modelPath, # set path to save model weights
-                            monitor='loss', # set monitor metrics
-                            verbose=1, # set training verbosity
-                            save_best_only=True, # set if want to save only best weights
-                            save_weights_only=False, # set if you want to save only model weights
-                            mode='auto', # set if save min or max in metrics
-                            save_freq= int(self.SAVE_PERIOD * self.STEPS_PER_EPOCH) # interval between checkpoints
-                            )
-
-        self.earlystopping = EarlyStopping(
-                monitor='loss', # set monitor metrics
-                min_delta=0.0001, # set minimum metrics delta
-                patience=25, # number of epochs to stop training
-                restore_best_weights=True, # set if use best weights or last weights
-                )
         
         # Setting up the cloud working space environment
         self.ws, self.project_id = self.SetUp_CloudWorkSpace(yaml_path)
@@ -87,15 +62,16 @@ class Simulator:
         Executes model training and evaluation simulations.
 
         Args:
-            num_simulations (int): Number of simulations to run.
+            NUM_SIMULATIONS (int): Number of simulations to run.
+            NUM_FOLDERS (int): Number of folders for cross-validation
+            results_base_directory (str): Base path to store results
 
         Returns:
-            tuple: Tuple containing plots of performance metrics and confusion matrix.
+            models_metrics (dict): Dictionary with mean results for each model simulated
         """
-        # Cargar configuraciones desde un archivo YAML
-        yaml_content = self.load_yaml(self.yaml_path)
 
-        models = self.build_models(yaml_content['configurations'], yaml_content['architectures'])
+        Model = ModelCreate(self.yaml_path)
+        models = Model.create_models()
 
         # Inicializar diccionario para almacenar métricas de los modelos
         models_metrics = {}
@@ -108,23 +84,7 @@ class Simulator:
             start_time = time.time()  # Tiempo de inicio para esta configuración
 
             # Inicializar el diccionario para almacenar las métricas detalladamente
-            detailed_metrics = {}
-            for sim in range(1, NUM_SIMULATIONS + 1):
-                detailed_metrics[f'sim_{sim}'] = {}
-
-                for fold in range(1, NUM_FOLDERS + 1):
-                    detailed_metrics[f'sim_{sim}'][f'fold_{fold}'] = {
-                        'metrics': {
-                            'f1_score': [],
-                            'recall': [],
-                            'precision': [],
-                            'roc_auc': [],
-                            'confusion_matrix': []
-                        },
-                        'training_indexes': None,
-                        'test_indexes': None}
-
-            print("Detailed metrics vacio: ", detailed_metrics)
+            detailed_metrics = self.generate_empty_dict(NUM_FOLDERS, NUM_SIMULATIONS)
 
             # Iterar a través de las simulaciones
             for i in range(NUM_SIMULATIONS):
@@ -146,14 +106,14 @@ class Simulator:
                     metadata = metadata
                     metadata['num_iteration'] = i + 1
                     metadata['folder'] = fold_no 
+                    if not (i+1 == 1 and fold_no == 1):
+                        del metadata['metric_presets']
 
-                    # Compilar el modelo
-                    optimizer = tf.keras.optimizers.Adam(learning_rate=self.learning_rate)
-                    model.compile(loss=self.loss, optimizer=optimizer, metrics=['accuracy'])
+                    train_config = TrainConfig(self.X, metadata) 
+                    callbacksList, batch_size, epochs = train_config.CreateTrainParams()
 
                     # Entrenar el modelo
-                    callbacksList = [self.checkpoint, self.earlystopping]
-                    hist = model.fit(self.X[train], self.Y[train], epochs=metadata['epochs'], batch_size=metadata['batch_size'], callbacks=callbacksList)
+                    hist = model.fit(self.X[train], self.Y[train], epochs=epochs, batch_size=batch_size, callbacks=callbacksList)
 
                     # Evaluar el modelo
                     ypredt = model.predict(self.X[test])
@@ -163,18 +123,10 @@ class Simulator:
                     df_cur = pd.DataFrame({'target': yTestClassT, 'prediction': pred_prob})
 
                     # Ejecutar un informe de rendimiento de clasificación personalizado
-                    modelo_folder, configuration_folder = self.perform_custom_report(model, model_name, df_cur, simulation_date_folder, tags, metadata, fold_no, i)
+                    modelo_folder, configuration_folder = self.perform_report(model, model_name, df_cur, simulation_date_folder, tags, metadata, fold_no, i)
 
                     # Almacenar los índices de las muestras de entrenamiento y prueba en el diccionario
-                    detailed_metrics[f'sim_{i+1}'][f"fold_{fold_no}"]["training_indexes"] = train
-                    detailed_metrics[f'sim_{i+1}'][f"fold_{fold_no}"]["test_indexes"] = test
-
-                    # Calcular métricas adicionales
-                    detailed_metrics[f'sim_{i+1}'][f"fold_{fold_no}"]["metrics"]["f1_score"].append(f1_score(yTestClassT, y_pred_labels))
-                    detailed_metrics[f'sim_{i+1}'][f"fold_{fold_no}"]["metrics"]["recall"].append(recall_score(yTestClassT, y_pred_labels))
-                    detailed_metrics[f'sim_{i+1}'][f"fold_{fold_no}"]["metrics"]["precision"].append(precision_score(yTestClassT, y_pred_labels))
-                    detailed_metrics[f'sim_{i+1}'][f"fold_{fold_no}"]["metrics"]["roc_auc"].append(roc_auc_score(yTestClassT, pred_prob))
-                    detailed_metrics[f'sim_{i+1}'][f"fold_{fold_no}"]["metrics"]["confusion_matrix"].append(confusion_matrix(yTestClassT, y_pred_labels))
+                    self.store_simulation_data(detailed_metrics, i, fold_no, train, test, yTestClassT, y_pred_labels, pred_prob)
 
                     # Predict on the independent set.
                     ypredt_ass = model.predict(self.ass_f)
@@ -365,12 +317,9 @@ class Simulator:
             nombre_archivo_test = f'test_suite_threshold_{threshold}.json'
             ruta_completa_test = os.path.join(modelo_folder, nombre_archivo_test)
             binary_classification_performance.save(ruta_completa_test)
-            # dict_test_suite = binary_classification_performance.as_dict()
-            # del(dict_test_suite['metrics_preset'])
-            # with open(ruta_completa_test, 'w') as file:
-            #     json.dump(dict_test_suite, file, indent=4)
 
-    def perform_custom_report(self, model, config_name, df, simulation_date_folder, tags, metadata, fold_no, i):
+
+    def perform_report(self, model, config_name, df, simulation_date_folder, tags, metadata, fold_no, i):
         """
         Performs a custom classification performance report and saves it in JSON format.
 
@@ -387,7 +336,7 @@ class Simulator:
         Returns:
             tuple: Paths to the folders where the custom report and model are saved.
         """
-        classification_performance_report = CustomReport(metrics=[ClassificationPreset()], tags=tags, metadata=metadata)
+        classification_performance_report = Report(metrics=[ClassificationPreset()], tags=tags, metadata=metadata)
         classification_performance_report.run(reference_data=None, current_data=df)
         self.ws.add_report(self.project_id, classification_performance_report)
 
@@ -401,10 +350,6 @@ class Simulator:
         nombre_archivo_rep = f"custom_report.json"
         ruta_completa = os.path.join(modelo_folder, nombre_archivo_rep)
         classification_performance_report.save(ruta_completa)
-        # dict_data = classification_performance_report.json()
-        # # del(dict_data['metrics_preset'])
-        # with open(ruta_completa, 'w') as file:
-        #     json.dump(dict_data, file, indent=4)
 
         save_path_model = os.path.join(modelo_folder, 'model.keras')
         model.save(save_path_model)
@@ -424,35 +369,45 @@ class Simulator:
         ws = CloudWorkspace(token=token, url=url)
 
         return ws, project_id
-    
-    # Definir una función para construir los modelos
-    def build_models(self, configurations, architectures):
-        models = []
-        for config_key, config in configurations.items():
-            for arch_key, arch in architectures.items():
-                # Crear una instancia de ConvNetBuilder para cada combinación de configuración y arquitectura
-                builder = ConvNetBuilder(
-                    kernel_widths=config['kernel_widths'],
-                    filters=config['filters'],
-                    dropouts=config['dropouts'],
-                    layer_types=arch,
-                    tags=config['tags'],
-                    metadata=config['metadata'],
-                    test_suite_thresholds=config['test_suite_thresholds']
-                )
-                # Construir el modelo y añadirlo a la lista de modelos
-                model, tags, metadata, test_suite_thresholds = builder.build_model()
-                model_name = f"{config_key}_{arch_key}"
-                models.append([model_name, model, tags, metadata, test_suite_thresholds])
 
-        return models
+    def store_simulation_data(self, detailed_metrics, i, fold_no, train, test, yTestClassT, y_pred_labels, pred_prob):
+        # Almacenar los índices de las muestras de entrenamiento y prueba en el diccionario
+        detailed_metrics[f'sim_{i+1}'][f"fold_{fold_no}"]["training_indexes"] = train
+        detailed_metrics[f'sim_{i+1}'][f"fold_{fold_no}"]["test_indexes"] = test
 
+        # Calcular métricas adicionales
+        detailed_metrics[f'sim_{i+1}'][f"fold_{fold_no}"]["metrics"]["f1_score"].append(f1_score(yTestClassT, y_pred_labels))
+        detailed_metrics[f'sim_{i+1}'][f"fold_{fold_no}"]["metrics"]["recall"].append(recall_score(yTestClassT, y_pred_labels))
+        detailed_metrics[f'sim_{i+1}'][f"fold_{fold_no}"]["metrics"]["precision"].append(precision_score(yTestClassT, y_pred_labels))
+        detailed_metrics[f'sim_{i+1}'][f"fold_{fold_no}"]["metrics"]["roc_auc"].append(roc_auc_score(yTestClassT, pred_prob))
+        detailed_metrics[f'sim_{i+1}'][f"fold_{fold_no}"]["metrics"]["confusion_matrix"].append(confusion_matrix(yTestClassT, y_pred_labels))
+        
     
     def convert_ndarray_to_list(self, obj):
         if isinstance(obj, np.ndarray):
             return obj.tolist()
         return obj
     
-    def load_yaml(self, filename):
-        with open(filename, 'r') as file:
-            return yaml.safe_load(file)
+    def generate_empty_dict(self, NUM_FOLDERS, NUM_SIMULATIONS):
+        # Inicializar el diccionario para almacenar las métricas detalladamente
+        detailed_metrics = {}
+        for sim in range(1, NUM_SIMULATIONS + 1):
+            detailed_metrics[f'sim_{sim}'] = {}
+
+            for fold in range(1, NUM_FOLDERS + 1):
+                detailed_metrics[f'sim_{sim}'][f'fold_{fold}'] = {
+                    'metrics': {
+                        'f1_score': [],
+                        'recall': [],
+                        'precision': [],
+                        'roc_auc': [],
+                        'confusion_matrix': []
+                    },
+                    'training_indexes': None,
+                    'test_indexes': None}
+                
+        return detailed_metrics
+    
+    # def load_yaml(self, filename):
+    #     with open(filename, 'r') as file:
+    #         return yaml.safe_load(file)
