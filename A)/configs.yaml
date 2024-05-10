@@ -27,99 +27,538 @@
 
 # """
 
+##################################################               ###################################################################
+##############################################     EVIDENTLY DATA     ###################################################################
+##################################################               ###################################################################
+
 evidently:
   token: dG9rbgF5sQ3u67hNVo7e7sL4fnJ4XmqN/OShAb/AhvcKVvPVdwBQ+rfox7G0ehgQfqSW3A+XWdfKYIoQMxrE7TcN0gBIU4Bia8KwfEtqBSx8hWwCrDno1orAqb5vNXp6e8Zr/KXRyydV8/ihwcIxDVePx4dc7XfrXF3i
   url: https://app.evidently.cloud
-  project_id: 773856a9-b047-46c8-8c58-be21716e9369
+  # project_id: 773856a9-b047-46c8-8c58-be21716e9369
+  project_id: 48f411d7-2f12-4bf0-b7ca-6593a11dd6e3
+
+##################################################               ###################################################################
+##############################################     ARCHITECTURES     ###################################################################
+##################################################               ###################################################################
 
 architectures:
-  architecture1: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
-  architecture2: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
+  ##################################################   3  ###################################################################
+  ############################################### Convolutions ##############################################################
+
+           ######################################### 3 Denses ################################################
+
+  # No pooling, No Dropout
+  architecture_3conv_3dense_1: ['C', 'C', 'C', 'flatten', 'F', 'F', 'F']
+  architecture_3conv_3dense_2: ['C', 'C', 'C', 'N', 'flatten', 'F', 'F', 'F']
+  architecture_3conv_3dense_3: ['C', 'N', 'C', 'N', 'C', 'N', 'flatten', 'F', 'F', 'F']
+  architecture_3conv_3dense_4: ['C', 'C', 'N', 'C', 'flatten', 'F', 'F', 'F']
+  # pooling before flatten layer, No dropout
+  architecture_3conv_3dense_5: ['C', 'C', 'C', 'P', 'flatten', 'F', 'F', 'F']
+  architecture_3conv_3dense_6: ['C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F']
+  architecture_3conv_3dense_7: ['C', 'N', 'C', 'N', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F']
+  architecture_3conv_3dense_8: ['C', 'C', 'N', 'C', 'P', 'flatten', 'F', 'F', 'F']
+  # pooling after each N, No dropout
+  architecture_3conv_3dense_9: ['C', 'C', 'C', 'flatten', 'F', 'F', 'F']
+  architecture_3conv_3dense_10: ['C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F']
+  architecture_3conv_3dense_11: ['C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F']
+  architecture_3conv_3dense_12: ['C', 'C', 'N', 'P', 'C', 'flatten', 'F', 'F', 'F']
+
+  # No pooling, 1 Dropout after each Dense
+  architecture_3conv_3dense_13: ['C', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_3conv_3dense_14: ['C', 'C', 'C', 'N', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_3conv_3dense_15: ['C', 'N', 'C', 'N', 'C', 'N', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_3conv_3dense_16: ['C', 'C', 'N', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D']
+  # pooling before flatten layer, 1 Dropout after each Dense
+  architecture_3conv_3dense_17: ['C', 'C', 'C', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_3conv_3dense_18: ['C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_3conv_3dense_19: ['C', 'N', 'C', 'N', 'C', 'N', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_3conv_3dense_20: ['C', 'C', 'N', 'C', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D']
+  # pooling after each N, 1 Dropout after each Dense
+  architecture_3conv_3dense_21: ['C', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_3conv_3dense_22: ['C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_3conv_3dense_23: ['C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_3conv_3dense_24: ['C', 'C', 'N', 'P', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D']
+
+  # No pooling, 1 Dropout after 3 Dense
+  architecture_3conv_3dense_25: ['C', 'C', 'C', 'flatten', 'F', 'F', 'F', 'D']
+  architecture_3conv_3dense_26: ['C', 'C', 'C', 'N', 'flatten', 'F', 'F', 'F', 'D']
+  architecture_3conv_3dense_27: ['C', 'N', 'C', 'N', 'C', 'N', 'flatten', 'F', 'F', 'F', 'D']
+  architecture_3conv_3dense_28: ['C', 'C', 'N', 'C', 'flatten', 'F', 'F', 'F', 'D']
+  # pooling before flatten layer, 1 Dropout after 3 Dense
+  architecture_3conv_3dense_29: ['C', 'C', 'C', 'P', 'flatten', 'F', 'F', 'F', 'D']
+  architecture_3conv_3dense_30: ['C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'D']
+  architecture_3conv_3dense_31: ['C', 'N', 'C', 'N', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'D']
+  architecture_3conv_3dense_32: ['C', 'C', 'N', 'C', 'P', 'flatten', 'F', 'F', 'F', 'D']
+  # pooling after each N, 1 Dropout after 3 Dense
+  architecture_3conv_3dense_33: ['C', 'C', 'C', 'flatten', 'F', 'F', 'F', 'D']
+  architecture_3conv_3dense_34: ['C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'D']
+  architecture_3conv_3dense_35: ['C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'D']
+  architecture_3conv_3dense_36: ['C', 'C', 'N', 'P', 'C', 'flatten', 'F', 'F', 'F', 'D']
+
+           ######################################### 7 Denses ################################################
+
+  # No pooling, No Dropout
+  architecture_3conv_7dense_1: ['C', 'C', 'C', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_3conv_7dense_2: ['C', 'C', 'C', 'N', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_3conv_7dense_3: ['C', 'N', 'C', 'N', 'C', 'N', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_3conv_7dense_4: ['C', 'C', 'N', 'C', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  # pooling before flatten layer, No dropout
+  architecture_3conv_7dense_5: ['C', 'C', 'C', 'P', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_3conv_7dense_6: ['C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_3conv_7dense_7: ['C', 'N', 'C', 'N', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_3conv_7dense_8: ['C', 'C', 'N', 'C', 'P', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  # pooling after each N, No dropout
+  architecture_3conv_7dense_9: ['C', 'C', 'C', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_3conv_7dense_10: ['C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_3conv_7dense_11: ['C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_3conv_7dense_12: ['C', 'C', 'N', 'P', 'C', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+
+  # No pooling, 1 Dropout after each Dense
+  architecture_3conv_7dense_13: ['C', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_3conv_7dense_14: ['C', 'C', 'C', 'N', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_3conv_7dense_15: ['C', 'N', 'C', 'N', 'C', 'N', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_3conv_7dense_16: ['C', 'C', 'N', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  # pooling before flatten layer, 1 Dropout after each Dense
+  architecture_3conv_7dense_17: ['C', 'C', 'C', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_3conv_7dense_18: ['C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_3conv_7dense_19: ['C', 'N', 'C', 'N', 'C', 'N', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_3conv_7dense_20: ['C', 'C', 'N', 'C', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  # pooling after each N, 1 Dropout after each Dense
+  architecture_3conv_7dense_21: ['C', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_3conv_7dense_22: ['C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_3conv_7dense_23: ['C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_3conv_7dense_24: ['C', 'C', 'N', 'P', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+
+  # No pooling, 1 Dropout after 3 Dense
+  architecture_3conv_7dense_25: ['C', 'C', 'C', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F']
+  architecture_3conv_7dense_26: ['C', 'C', 'C', 'N', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F']
+  architecture_3conv_7dense_27: ['C', 'N', 'C', 'N', 'C', 'N', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F']
+  architecture_3conv_7dense_28: ['C', 'C', 'N', 'C', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F']
+  # pooling before flatten layer, 1 Dropout after 3 Dense
+  architecture_3conv_7dense_29: ['C', 'C', 'C', 'P', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F']
+  architecture_3conv_7dense_30: ['C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F']
+  architecture_3conv_7dense_31: ['C', 'N', 'C', 'N', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F']
+  architecture_3conv_7dense_32: ['C', 'C', 'N', 'C', 'P', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F']
+  # pooling after each N, 1 Dropout after 3 Dense
+  architecture_3conv_7dense_33: ['C', 'C', 'C', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F']
+  architecture_3conv_7dense_34: ['C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F']
+  architecture_3conv_7dense_35: ['C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F']
+  architecture_3conv_7dense_36: ['C', 'C', 'N', 'P', 'C', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F']
+
+           ######################################### 11 Denses ################################################
+
+  # No pooling, No Dropout
+  architecture_3conv_11dense_1: ['C', 'C', 'C', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_3conv_11dense_2: ['C', 'C', 'C', 'N', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_3conv_11dense_3: ['C', 'N', 'C', 'N', 'C', 'N', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_3conv_11dense_4: ['C', 'C', 'N', 'C', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  # pooling before flatten layer, No dropout
+  architecture_3conv_11dense_5: ['C', 'C', 'C', 'P', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_3conv_11dense_6: ['C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_3conv_11dense_7: ['C', 'N', 'C', 'N', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_3conv_11dense_8: ['C', 'C', 'N', 'C', 'P', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  # pooling after each N, No dropout
+  architecture_3conv_11dense_9: ['C', 'C', 'C', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_3conv_11dense_10: ['C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_3conv_11dense_11: ['C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_3conv_11dense_12: ['C', 'C', 'N', 'P', 'C', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+
+  # No pooling, 1 Dropout after each Dense
+  architecture_3conv_11dense_13: ['C', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_3conv_11dense_14: ['C', 'C', 'C', 'N', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_3conv_11dense_15: ['C', 'N', 'C', 'N', 'C', 'N', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_3conv_11dense_16: ['C', 'C', 'N', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  # pooling before flatten layer, 1 Dropout after each Dense
+  architecture_3conv_11dense_17: ['C', 'C', 'C', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_3conv_11dense_18: ['C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_3conv_11dense_19: ['C', 'N', 'C', 'N', 'C', 'N', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_3conv_11dense_20: ['C', 'C', 'N', 'C', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  # pooling after each N, 1 Dropout after each Dense
+  architecture_3conv_11dense_21: ['C', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_3conv_11dense_22: ['C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_3conv_11dense_23: ['C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_3conv_11dense_24: ['C', 'C', 'N', 'P', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+
+  # No pooling, 1 Dropout after 3 Dense
+  architecture_3conv_11dense_25: ['C', 'C', 'C', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F']
+  architecture_3conv_11dense_26: ['C', 'C', 'C', 'N', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F']
+  architecture_3conv_11dense_27: ['C', 'N', 'C', 'N', 'C', 'N', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F']
+  architecture_3conv_11dense_28: ['C', 'C', 'N', 'C', 'flatten', 'F', 'F', 'F', 'D']
+  # pooling before flatten layer, 1 Dropout after 3 Dense
+  architecture_3conv_11dense_29: ['C', 'C', 'C', 'P', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F']
+  architecture_3conv_11dense_30: ['C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F']
+  architecture_3conv_11dense_31: ['C', 'N', 'C', 'N', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F']
+  architecture_3conv_11dense_32: ['C', 'C', 'N', 'C', 'P', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F']
+  # pooling after each N, 1 Dropout after 3 Dense
+  architecture_3conv_11dense_33: ['C', 'C', 'C', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F']
+  architecture_3conv_11dense_34: ['C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F']
+  architecture_3conv_11dense_35: ['C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F']
+  architecture_3conv_11dense_36: ['C', 'C', 'N', 'P', 'C', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F']
+
+  ##################################################   5  ###################################################################
+  ############################################### Convolutions ##############################################################
+
+           ######################################### 3 Denses ################################################
+
+  # No pooling, No Dropout
+  architecture_5conv_3dense_1: ['C', 'C', 'C', 'C', 'C', 'flatten', 'F', 'F', 'F']
+  architecture_5conv_3dense_2: ['C', 'C', 'C', 'C', 'C', 'N', 'flatten', 'F', 'F', 'F']
+  architecture_5conv_3dense_3: ['C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'flatten', 'F', 'F', 'F']
+  architecture_5conv_3dense_4: ['C', 'C', 'N', 'C', 'C', 'N', 'C', 'flatten', 'F', 'F', 'F']
+  # pooling before flatten layer, No dropout
+  architecture_5conv_3dense_5: ['C', 'C', 'C', 'C', 'C', 'P', 'flatten', 'F', 'F', 'F']
+  architecture_5conv_3dense_6: ['C', 'C', 'C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F']
+  architecture_5conv_3dense_7: ['C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F']
+  architecture_5conv_3dense_8: ['C', 'C', 'N', 'C',  'C', 'N', 'C', 'P', 'flatten', 'F', 'F', 'F']
+  # pooling after each N, No dropout
+  architecture_5conv_3dense_9: ['C', 'C', 'C', 'C', 'C', 'flatten', 'F', 'F', 'F']
+  architecture_5conv_3dense_10: ['C', 'C', 'C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F']
+  architecture_5conv_3dense_11: ['C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F']
+  architecture_5conv_3dense_12: ['C', 'C', 'N', 'P', 'C',  'C', 'N', 'P', 'C', 'flatten', 'F', 'F', 'F']
+
+  # No pooling, 1 Dropout after each Dense
+  architecture_5conv_3dense_13: ['C', 'C', 'C', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_5conv_3dense_14: ['C', 'C', 'C', 'C', 'C', 'N', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_5conv_3dense_15: ['C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_5conv_3dense_16: ['C', 'C', 'N', 'C', 'C', 'N', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D']
+  # pooling before flatten layer, 1 Dropout after each Dense
+  architecture_5conv_3dense_17: ['C', 'C', 'C', 'C', 'C', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_5conv_3dense_18: ['C', 'C', 'C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_5conv_3dense_19: ['C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_5conv_3dense_20: ['C', 'C', 'N', 'C', 'C', 'N', 'C', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D']
+  # pooling after each N, 1 Dropout after each Dense
+  architecture_5conv_3dense_21: ['C', 'C', 'C', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_5conv_3dense_22: ['C', 'C', 'C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_5conv_3dense_23: ['C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_5conv_3dense_24: ['C', 'C', 'N', 'P', 'C', 'C', 'N', 'P', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D']
+
+  # No pooling, 1 Dropout after 3 Dense
+  architecture_5conv_3dense_25: ['C', 'C', 'C', 'C', 'C', 'flatten', 'F', 'F', 'F', 'D']
+  architecture_5conv_3dense_26: ['C', 'C', 'C', 'C', 'C', 'N', 'flatten', 'F', 'F', 'F', 'D']
+  architecture_5conv_3dense_27: ['C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'flatten', 'F', 'F', 'F', 'D']
+  architecture_5conv_3dense_28: ['C', 'C', 'N', 'C', 'flatten', 'F', 'F', 'F', 'D']
+  # pooling before flatten layer, 1 Dropout after 3 Dense
+  architecture_5conv_3dense_29: ['C', 'C', 'C', 'C', 'C', 'P', 'flatten', 'F', 'F', 'F', 'D']
+  architecture_5conv_3dense_30: ['C', 'C', 'C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'D']
+  architecture_5conv_3dense_31: ['C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'D']
+  architecture_5conv_3dense_32: ['C', 'C', 'N', 'C', 'C', 'N', 'C', 'P', 'flatten', 'F', 'F', 'F', 'D']
+  # pooling after each N, 1 Dropout after 3 Dense
+  architecture_5conv_3dense_33: ['C', 'C', 'C', 'C', 'C', 'flatten', 'F', 'F', 'F', 'D']
+  architecture_5conv_3dense_34: ['C', 'C', 'C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'D']
+  architecture_5conv_3dense_35: ['C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'D']
+  architecture_5conv_3dense_36: ['C', 'C', 'N', 'P', 'C',  'C', 'N', 'P', 'C', 'flatten', 'F', 'F', 'F', 'D']
+
+           ######################################### 7 Denses ################################################
+
+  # No pooling, No Dropout
+  architecture_5conv_7dense_1: ['C', 'C', 'C', 'C', 'C', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_5conv_7dense_2: ['C', 'C', 'C', 'C', 'C', 'N', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_5conv_7dense_3: ['C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_5conv_7dense_4: ['C', 'C', 'N', 'C', 'C', 'N', 'C', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  # pooling before flatten layer, No dropout
+  architecture_5conv_7dense_5: ['C', 'C', 'C', 'C', 'C', 'P', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_5conv_7dense_6: ['C', 'C', 'C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_5conv_7dense_7: ['C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_5conv_7dense_8: ['C', 'C', 'N', 'C',  'C', 'N', 'C', 'P', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  # pooling after each N, No dropout
+  architecture_5conv_7dense_9: ['C', 'C', 'C', 'C', 'C', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_5conv_7dense_10: ['C', 'C', 'C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_5conv_7dense_11: ['C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_5conv_7dense_12: ['C', 'C', 'N', 'P', 'C',  'C', 'N', 'P', 'C', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+
+  # No pooling, 1 Dropout after each Dense
+  architecture_5conv_7dense_13: ['C', 'C', 'C', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_5conv_7dense_14: ['C', 'C', 'C', 'C', 'C', 'N', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_5conv_7dense_15: ['C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_5conv_7dense_16: ['C', 'C', 'N', 'C', 'C', 'N', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  # pooling before flatten layer, 1 Dropout after each Dense
+  architecture_5conv_7dense_17: ['C', 'C', 'C', 'C', 'C', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_5conv_7dense_18: ['C', 'C', 'C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_5conv_7dense_19: ['C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_5conv_7dense_20: ['C', 'C', 'N', 'C', 'C', 'N', 'C', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  # pooling after each N, 1 Dropout after each Dense
+  architecture_5conv_7dense_21: 'C', 'C', 'C', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_5conv_7dense_22: ['C', 'C', 'C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_5conv_7dense_23: ['C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_5conv_7dense_24: ['C', 'C', 'N', 'P', 'C',  'C', 'N', 'P', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+
+  # No pooling, 1 Dropout after 3 Dense
+  architecture_5conv_7dense_25: ['C', 'C', 'C', 'C', 'C', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F']
+  architecture_5conv_7dense_26: ['C', 'C', 'C', 'C', 'C', 'N', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F']
+  architecture_5conv_7dense_27: ['C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F']
+  architecture_5conv_7dense_28: ['C', 'C', 'N', 'C', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F']
+  # pooling before flatten layer, 1 Dropout after 3 Dense
+  architecture_5conv_7dense_29: ['C', 'C', 'C', 'C', 'C', 'P', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F']
+  architecture_5conv_7dense_30: ['C', 'C', 'C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F']
+  architecture_5conv_7dense_31: ['C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F']
+  architecture_5conv_7dense_32: ['C', 'C', 'N', 'C', 'C', 'N', 'C', 'P', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F']
+  # pooling after each N, 1 Dropout after 3 Dense
+  architecture_5conv_7dense_33: ['C', 'C', 'C', 'C', 'C', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F']
+  architecture_5conv_7dense_34: ['C', 'C', 'C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F']
+  architecture_5conv_7dense_35: ['C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F']
+  architecture_5conv_7dense_36: ['C', 'C', 'N', 'P', 'C',  'C', 'N', 'P', 'C', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F']
+
+           ######################################### 11 Denses ################################################
+
+  # No pooling, No Dropout
+  architecture_5conv_11dense_1: ['C', 'C', 'C', 'C', 'C', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_5conv_11dense_2: ['C', 'C', 'C', 'C', 'C', 'N', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_5conv_11dense_3: ['C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_5conv_11dense_4: ['C', 'C', 'N', 'C', 'C', 'N', 'C', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  # pooling before flatten layer, No dropout
+  architecture_5conv_11dense_5: ['C', 'C', 'C', 'C', 'C', 'P', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_5conv_11dense_6: ['C', 'C', 'C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_5conv_11dense_7: ['C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_5conv_11dense_8: ['C', 'C', 'N', 'C',  'C', 'N', 'C', 'P', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  # pooling after each N, No dropout
+  architecture_5conv_11dense_9: ['C', 'C', 'C', 'C', 'C', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_5conv_11dense_10: ['C', 'C', 'C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_5conv_11dense_11: ['C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+  architecture_5conv_11dense_12: ['C', 'C', 'N', 'P', 'C',  'C', 'N', 'P', 'C', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+
+  # No pooling, 1 Dropout after each Dense
+  architecture_5conv_11dense_13: ['C', 'C', 'C', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_5conv_11dense_14: ['C', 'C', 'C', 'C', 'C', 'N', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_5conv_11dense_15: ['C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_5conv_11dense_16: ['C', 'C', 'N', 'C', 'C', 'N', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  # pooling before flatten layer, 1 Dropout after each Dense
+  architecture_5conv_11dense_17: ['C', 'C', 'C', 'C', 'C', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_5conv_11dense_18: ['C', 'C', 'C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_5conv_11dense_19: ['C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_5conv_11dense_20: ['C', 'C', 'N', 'C', 'C', 'N', 'C', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  # pooling after each N, 1 Dropout after each Dense
+  architecture_5conv_11dense_21: ['C', 'C', 'C', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_5conv_11dense_22: ['C', 'C', 'C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_5conv_11dense_23: ['C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+  architecture_5conv_11dense_24: ['C', 'C', 'N', 'P', 'C', 'C', 'N', 'P', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+
+  # No pooling, 1 Dropout after 3 Dense
+  architecture_5conv_11dense_25: ['C', 'C', 'C', 'C', 'C', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F']
+  architecture_5conv_11dense_26: ['C', 'C', 'C', 'C', 'C', 'N', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F']
+  architecture_5conv_11dense_27: ['C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F']
+  architecture_5conv_11dense_28: ['C', 'C', 'N', 'C', 'flatten', 'F', 'F', 'F', 'D']
+  # pooling before flatten layer, 1 Dropout after 3 Dense
+  architecture_5conv_11dense_29: ['C', 'C', 'C', 'C', 'C', 'P', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F']
+  architecture_5conv_11dense_30: ['C', 'C', 'C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F']
+  architecture_5conv_11dense_31: ['C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F']
+  architecture_5conv_11dense_32: ['C', 'C', 'N', 'C', 'C', 'N', 'C', 'P', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F']
+  # pooling after each N, 1 Dropout after 3 Dense
+  architecture_5conv_11dense_33: ['C', 'C', 'C', 'C', 'C', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F']
+  architecture_5conv_11dense_34: ['C', 'C', 'C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F']
+  architecture_5conv_11dense_35: ['C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F']
+  architecture_5conv_11dense_36: ['C', 'C', 'N', 'P', 'C',  'C', 'N', 'P', 'C', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F']
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+##################################################               ###################################################################
+##############################################     CONFIGURATIONS     ###################################################################
+##################################################               ###################################################################
+
+# configurations:
+#   config1:
+#     kernel_widths: '50_cte'/'20_cte'/
+#     filters: '16_cte'
+#     dropouts: '0.5_cte'
+#     tags: ['config2_def']
+#     metadata: {'epochs': 5, 'batch_size': 32, 'kernel_widths': '50_cte', 'filters': '16_cte', 'dropouts': '0.5_cte'}
+#     test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9]
+
 
 configurations:
+  ############################################### kernel_widths '50_cte' ############################################### 
   config1:
-    kernel_widths: [20, 20, 6, 6, 6]
-    filters: [32, 32, 32, 32, 32]
-    dropouts: [0.4, 0.4, 0.4]
-    tags: ['prueba', 'prueba2']
-    metadata: {'epochs': 5, 'batch_size': 16}
+    kernel_widths: '50_cte'
+    filters: '16_cte'
+    dropouts: '0.5_cte'
+    tags: ['config2_def']
+    metadata: {'epochs': 5, 'batch_size': 32, 'kernel_widths': '50_cte', 'filters': '16_cte', 'dropouts': '0.5_cte'}
     test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9]
 
   config2:
-    kernel_widths: [20, 20, 6, 6, 6]
-    filters: [32, 32, 32, 32, 32]
-    dropouts: [0, 0, 0]
-    tags: ['prueba', 'prueba2']
-    metadata: {'epochs': 5, 'batch_size': 32}
+    kernel_widths: '50_cte'
+    filters: '16_cte'
+    dropouts: '0.3_cte'
+    tags: ['config2_def']
+    metadata: {'epochs': 5, 'batch_size': 32, 'kernel_widths': '50_cte', 'filters': '16_cte', 'dropouts': '0.3_cte'}
     test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9]
 
-  # config3:
-  #   kernel_widths: [20, 20, 6, 6, 6]
-  #   filters: [32, 32, 32, 32, 32]
-  #   dropouts: [0.2, 0.2, 0.2]
-  #   layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
-  #   tags: ['prueba', 'prueba2']
-  #   metadata: {'epochs': 20, 'batch_size': 32, 'filters': 20}
+  config3:
+    kernel_widths: '50_cte'
+    filters: '32_cte'
+    dropouts: '0.5_cte'
+    tags: ['config2_def']
+    metadata: {'epochs': 5, 'batch_size': 32, 'kernel_widths': '50_cte', 'filters': '16_cte', 'dropouts': '0.5_cte'}
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9]
 
-  # config4:
-  #   kernel_widths: [20, 20, 6, 6, 6]
-  #   filters: [32, 32, 32, 32, 32]
-  #   dropouts: [0.4, 0.4, 0.4]
-  #   layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
-  #   tags: ['prueba', 'prueba2']
-  #   metadata: {'epochs': 20, 'batch_size': 100}
+  config4:
+    kernel_widths: '50_cte'
+    filters: '32_cte'
+    dropouts: '0.3_cte'
+    tags: ['config2_def']
+    metadata: {'epochs': 5, 'batch_size': 32, 'kernel_widths': '50_cte', 'filters': '16_cte', 'dropouts': '0.3_cte'}
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9]
 
-  # config5:
-  #   kernel_widths: [20, 20, 6, 6, 6]
-  #   filters: [32, 32, 32, 32, 32]
-  #   dropouts: [0.6, 0.6, 0.6]
-  #   layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
-  #   tags: ['prueba', 'prueba2']
-  #   metadata: {'epochs': 20, 'batch_size': 32}
+  ############################################### kernel_widths '20_cte' ############################################### 
+  config5:
+    kernel_widths: '20_cte'
+    filters: '16_cte'
+    dropouts: '0.5_cte'
+    tags: ['config2_def']
+    metadata: {'epochs': 5, 'batch_size': 32, 'kernel_widths': '50_cte', 'filters': '16_cte', 'dropouts': '0.5_cte'}
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9]
 
-  # config6:
-  #   kernel_widths: [20, 20, 6, 6, 6]
-  #   filters: [32, 32, 32, 32, 32]
-  #   dropouts: [0.2, 0.4, 0.6]
-  #   layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
-  #   tags: ['prueba', 'prueba2']
-  #   metadata: {'epochs': 20, 'batch_size': 32}
+  config6:
+    kernel_widths: '20_cte'
+    filters: '16_cte'
+    dropouts: '0.3_cte'
+    tags: ['config2_def']
+    metadata: {'epochs': 5, 'batch_size': 32, 'kernel_widths': '50_cte', 'filters': '16_cte', 'dropouts': '0.3_cte'}
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9]
 
-  # config7:
-  #   kernel_widths: [20, 20, 6, 6, 6]
-  #   filters: [32, 32, 32, 32, 32]
-  #   dropouts: [0.6, 0.4, 0.2]
-  #   layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
-  #   tags: ['prueba', 'prueba2']
-  #   metadata: {'epochs': 20, 'batch_size': 32}
+  config7:
+    kernel_widths: '20_cte'
+    filters: '32_cte'
+    dropouts: '0.5_cte'
+    tags: ['config2_def']
+    metadata: {'epochs': 5, 'batch_size': 32, 'kernel_widths': '50_cte', 'filters': '16_cte', 'dropouts': '0.5_cte'}
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9]
 
-  # config8:
-  #   kernel_widths: [20, 20, 6, 6, 6]
-  #   filters: [50, 50, 50, 50, 50]
-  #   dropouts: [0.4, 0.4, 0.4]
-  #   layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
-  #   tags: ['prueba', 'prueba2']
-  #   metadata: {'epochs': 20, 'batch_size': 32}
+  config8:
+    kernel_widths: '20_cte'
+    filters: '32_cte'
+    dropouts: '0.3_cte'
+    tags: ['config2_def']
+    metadata: {'epochs': 5, 'batch_size': 32, 'kernel_widths': '50_cte', 'filters': '16_cte', 'dropouts': '0.3_cte'}
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9]
 
-  # config9:
-  #   kernel_widths: [10, 10, 10, 10, 10]
-  #   filters: [32, 32, 32, 32, 32]
-  #   dropouts: [0.4, 0.4, 0.4]
-  #   layer_types: ['C', 'C', 'N', 'C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 256, 128, 32, 2]
+  ############################################### kernel_widths '5_cte' ############################################### 
 
-  #   tags: ['prueba', 'prueba2']
-  #   metadata: {'epochs': 20, 'batch_size': 32}
+  config9:
+    kernel_widths: '5_cte'
+    filters: '16_cte'
+    dropouts: '0.5_cte'
+    tags: ['config2_def']
+    metadata: {'epochs': 5, 'batch_size': 32, 'kernel_widths': '50_cte', 'filters': '16_cte', 'dropouts': '0.5_cte'}
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9]
 
-  # config10:
-  #   kernel_widths: [20, 20, 6, 6, 6]
-  #   filters: [32, 32, 32, 32, 32]
-  #   dropouts: [0.6, 0.4, 0.2]
-  #   layer_types: ['C', 'N', 'C', 'N', 'C', 'P', 'C', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 296, 148, 74, 2]
-  #   tags: ['prueba', 'prueba2']
-  #   metadata: {'epochs': 20, 'batch_size': 32}
+  config10:
+    kernel_widths: '5_cte'
+    filters: '16_cte'
+    dropouts: '0.3_cte'
+    tags: ['config2_def']
+    metadata: {'epochs': 5, 'batch_size': 32, 'kernel_widths': '50_cte', 'filters': '16_cte', 'dropouts': '0.3_cte'}
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9]
 
+  config11:
+    kernel_widths: '5_cte'
+    filters: '32_cte'
+    dropouts: '0.5_cte'
+    tags: ['config2_def']
+    metadata: {'epochs': 5, 'batch_size': 32, 'kernel_widths': '50_cte', 'filters': '16_cte', 'dropouts': '0.5_cte'}
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9]
 
+  config12:
+    kernel_widths: '5_cte'
+    filters: '32_cte'
+    dropouts: '0.3_cte'
+    tags: ['config2_def']
+    metadata: {'epochs': 5, 'batch_size': 32, 'kernel_widths': '50_cte', 'filters': '16_cte', 'dropouts': '0.3_cte'}
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9]
 
+  ############################################### kernel_widths 'ASC' ###############################################
 
+  config13:
+    kernel_widths: 'ASC'
+    filters: '16_cte'
+    dropouts: '0.5_cte'
+    tags: ['config2_def']
+    metadata: {'epochs': 5, 'batch_size': 32, 'kernel_widths': '50_cte', 'filters': '16_cte', 'dropouts': '0.5_cte'}
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9]
 
+  config14:
+    kernel_widths: 'ASC'
+    filters: '16_cte'
+    dropouts: '0.3_cte'
+    tags: ['config2_def']
+    metadata: {'epochs': 5, 'batch_size': 32, 'kernel_widths': '50_cte', 'filters': '16_cte', 'dropouts': '0.3_cte'}
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9]
 
+  config15:
+    kernel_widths: 'ASC'
+    filters: '32_cte'
+    dropouts: '0.5_cte'
+    tags: ['config2_def']
+    metadata: {'epochs': 5, 'batch_size': 32, 'kernel_widths': '50_cte', 'filters': '16_cte', 'dropouts': '0.5_cte'}
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9]
+
+  config16:
+    kernel_widths: 'ASC'
+    filters: '32_cte'
+    dropouts: '0.3_cte'
+    tags: ['config2_def']
+    metadata: {'epochs': 5, 'batch_size': 32, 'kernel_widths': '50_cte', 'filters': '16_cte', 'dropouts': '0.3_cte'}
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9]
+
+  ############################################### kernel_widths 'DESC' ###############################################
+
+  config17:
+    kernel_widths: 'DESC'
+    filters: '16_cte'
+    dropouts: '0.5_cte'
+    tags: ['config2_def']
+    metadata: {'epochs': 5, 'batch_size': 32, 'kernel_widths': '50_cte', 'filters': '16_cte', 'dropouts': '0.5_cte'}
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9]
+
+  config18:
+    kernel_widths: 'DESC'
+    filters: '16_cte'
+    dropouts: '0.3_cte'
+    tags: ['config2_def']
+    metadata: {'epochs': 5, 'batch_size': 32, 'kernel_widths': '50_cte', 'filters': '16_cte', 'dropouts': '0.3_cte'}
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9]
+
+  config19:
+    kernel_widths: 'DESC'
+    filters: '32_cte'
+    dropouts: '0.5_cte'
+    tags: ['config2_def']
+    metadata: {'epochs': 5, 'batch_size': 32, 'kernel_widths': '50_cte', 'filters': '16_cte', 'dropouts': '0.5_cte'}
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9]
+
+  config20:
+    kernel_widths: 'DESC'
+    filters: '32_cte'
+    dropouts: '0.3_cte'
+    tags: ['config2_def']
+    metadata: {'epochs': 5, 'batch_size': 32, 'kernel_widths': '50_cte', 'filters': '16_cte', 'dropouts': '0.3_cte'}
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9]
