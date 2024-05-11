@@ -21,6 +21,11 @@ evidently:
 #   - 'F': Dense layer
 #   - 'D': Dropout layer
 
+# For each group of 4 architectures, the first one is with no N layers.
+  # The second one if 1 N after the last C.
+  # The third one is 1 N after each C.
+  # The fourth one is one N after every 2 C.
+
 architectures:
   ##################################################   3  ###################################################################
   ############################################### Convolutions ##############################################################
