@@ -1,0 +1,24 @@
+##################################################               ###################################################################
+##############################################     EVIDENTLY DATA     ###################################################################
+##################################################               ###################################################################
+
+evidently:
+  token: dG9rbgF5sQ3u67hNVo7e7sL4fnJ4XK8QXIhKPfMqxlZw8LUKowBQDkYS6R6ocAbPPQ6GNh3cYgu8ob2XcI08hhQiZgxEZbe2xTdGbvfScslPg5mxdq60ZhuAiKzfZt8BbXpeEW7FIlAkQ25dCkQodDzEywTpQ7V1CqVD
+  url: https://app.evidently.cloud
+  project_id: 
+
+##################################################               ###################################################################
+##############################################         MODELS        ###################################################################
+##################################################               ###################################################################
+
+models:
+  model1:
+    # arch: ['C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D']
+    # arch: ['N', 'C', 'P', 'C', 'P', 'flatten', 'N', 'F', 'D']
+    # Esta arquitectura de abajo es la que obtuvo un mejor resultado en A) con su configuración correspondiente.
+    arch: ['C', 'C', 'N', 'P', 'C', 'C', 'N', 'P', 'C', 'C', 'N', 'P', 'C', 'C', 'N', 'P', 'C', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+    arch_name: architecture_10conv_3dense_1
+    kernel_widths: '5_cte'
+    filters: '16_cte'
+    dropouts: '0.5_cte'
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8]
