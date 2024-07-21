@@ -1,0 +1,209 @@
+##################################################               ###################################################################
+##############################################     EVIDENTLY DATA     ###################################################################
+##################################################               ###################################################################
+evidently:
+  token: dG9rbgF5sQ3u67hNVo7e7sL4fnJ4XK8QXIhKPfMqxlZw8LUKowBQDkYS6R6ocAbPPQ6GNh3cYgu8ob2XcI08hhQiZgxEZbe2xTdGbvfScslPg5mxdq60ZhuAiKzfZt8BbXpeEW7FIlAkQ25dCkQodDzEywTpQ7V1CqVD
+  url: https://app.evidently.cloud
+  project_id: 619dbd4a-bc10-4c9c-b0af-1224b4dadd29
+
+##################################################               ###################################################################
+##############################################     CONFIGURATIONS     ###################################################################
+##################################################               ###################################################################
+
+configurations:
+  yolov8n-cls.pt_0_50:
+    epochs: 50
+    frozen_layers: 0
+    metadata:
+      epochs: 50
+      frozen_layers: 0
+      model: yolov8n-cls.pt
+      yolov8n-cls.pt_0_50: yolov8n-cls.pt_0_50
+    model: yolov8n-cls.pt
+    tags:
+    - yolov8n-cls.pt
+    - 50_epochs
+    - freeze_0
+  yolov8n-cls.pt_3_100:
+    epochs: 100
+    frozen_layers: 3
+    metadata:
+      epochs: 100
+      frozen_layers: 3
+      model: yolov8n-cls.pt
+      yolov8n-cls.pt_3_100: yolov8n-cls.pt_3_100
+    model: yolov8n-cls.pt
+    tags:
+    - yolov8n-cls.pt
+    - 100_epochs
+    - freeze_3
+  yolov8n-cls.pt_3_300:
+    epochs: 300
+    frozen_layers: 3
+    metadata:
+      epochs: 300
+      frozen_layers: 3
+      model: yolov8n-cls.pt
+      yolov8n-cls.pt_3_300: yolov8n-cls.pt_3_300
+    model: yolov8n-cls.pt
+    tags:
+    - yolov8n-cls.pt
+    - 300_epochs
+    - freeze_3
+  yolov8n-cls.pt_3_50:
+    epochs: 50
+    frozen_layers: 3
+    metadata:
+      epochs: 50
+      frozen_layers: 3
+      model: yolov8n-cls.pt
+      yolov8n-cls.pt_3_50: yolov8n-cls.pt_3_50
+    model: yolov8n-cls.pt
+    tags:
+    - yolov8n-cls.pt
+    - 50_epochs
+    - freeze_3
+  yolov8n-cls.pt_5_100:
+    epochs: 100
+    frozen_layers: 5
+    metadata:
+      epochs: 100
+      frozen_layers: 5
+      model: yolov8n-cls.pt
+      yolov8n-cls.pt_5_100: yolov8n-cls.pt_5_100
+    model: yolov8n-cls.pt
+    tags:
+    - yolov8n-cls.pt
+    - 100_epochs
+    - freeze_5
+  yolov8n-cls.pt_5_300:
+    epochs: 300
+    frozen_layers: 5
+    metadata:
+      epochs: 300
+      frozen_layers: 5
+      model: yolov8n-cls.pt
+      yolov8n-cls.pt_5_300: yolov8n-cls.pt_5_300
+    model: yolov8n-cls.pt
+    tags:
+    - yolov8n-cls.pt
+    - 300_epochs
+    - freeze_5
+  yolov8n-cls.pt_5_50:
+    epochs: 50
+    frozen_layers: 5
+    metadata:
+      epochs: 50
+      frozen_layers: 5
+      model: yolov8n-cls.pt
+      yolov8n-cls.pt_5_50: yolov8n-cls.pt_5_50
+    model: yolov8n-cls.pt
+    tags:
+    - yolov8n-cls.pt
+    - 50_epochs
+    - freeze_5
+  yolov8n-cls.pt_8_100:
+    epochs: 100
+    frozen_layers: 8
+    metadata:
+      epochs: 100
+      frozen_layers: 8
+      model: yolov8n-cls.pt
+      yolov8n-cls.pt_8_100: yolov8n-cls.pt_8_100
+    model: yolov8n-cls.pt
+    tags:
+    - yolov8n-cls.pt
+    - 100_epochs
+    - freeze_8
+  yolov8n-cls.pt_8_300:
+    epochs: 300
+    frozen_layers: 8
+    metadata:
+      epochs: 300
+      frozen_layers: 8
+      model: yolov8n-cls.pt
+      yolov8n-cls.pt_8_300: yolov8n-cls.pt_8_300
+    model: yolov8n-cls.pt
+    tags:
+    - yolov8n-cls.pt
+    - 300_epochs
+    - freeze_8
+  yolov8n-cls.pt_8_50:
+    epochs: 50
+    frozen_layers: 8
+    metadata:
+      epochs: 50
+      frozen_layers: 8
+      model: yolov8n-cls.pt
+      yolov8n-cls.pt_8_50: yolov8n-cls.pt_8_50
+    model: yolov8n-cls.pt
+    tags:
+    - yolov8n-cls.pt
+    - 50_epochs
+    - freeze_8
+configurations:
+  yolov8n-cls.pt_9_100:
+    epochs: 100
+    frozen_layers: 9
+    metadata:
+      epochs: 100
+      frozen_layers: 9
+      model: yolov8n-cls.pt
+      yolov8n-cls.pt_9_100: yolov8n-cls.pt_9_100
+    model: yolov8n-cls.pt
+    tags:
+    - yolov8n-cls.pt
+    - 100_epochs
+    - freeze_9
+  yolov8n-cls.pt_9_300:
+    epochs: 300
+    frozen_layers: 9
+    metadata:
+      epochs: 300
+      frozen_layers: 9
+      model: yolov8n-cls.pt
+      yolov8n-cls.pt_9_300: yolov8n-cls.pt_9_300
+    model: yolov8n-cls.pt
+    tags:
+    - yolov8n-cls.pt
+    - 300_epochs
+    - freeze_9
+  yolov8n-cls.pt_9_50:
+    epochs: 50
+    frozen_layers: 9
+    metadata:
+      epochs: 50
+      frozen_layers: 9
+      model: yolov8n-cls.pt
+      yolov8n-cls.pt_9_50: yolov8n-cls.pt_9_50
+    model: yolov8n-cls.pt
+    tags:
+    - yolov8n-cls.pt
+    - 50_epochs
+    - freeze_9
+  yolov8n-cls.pt_0_100:
+    epochs: 100
+    frozen_layers: 0
+    metadata:
+      epochs: 100
+      frozen_layers: 0
+      model: yolov8n-cls.pt
+      yolov8n-cls.pt_0_100: yolov8n-cls.pt_0_100
+    model: yolov8n-cls.pt
+    tags:
+    - yolov8n-cls.pt
+    - 100_epochs
+    - freeze_0
+  yolov8n-cls.pt_0_300:
+    epochs: 300
+    frozen_layers: 0
+    metadata:
+      epochs: 300
+      frozen_layers: 0
+      model: yolov8n-cls.pt
+      yolov8n-cls.pt_0_300: yolov8n-cls.pt_0_300
+    model: yolov8n-cls.pt
+    tags:
+    - yolov8n-cls.pt
+    - 300_epochs
+    - freeze_0
