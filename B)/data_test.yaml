@@ -1,8 +1,0 @@
-path: /home/aacastro/Alejandro/DQ_ACA_2024/B/data
-train: /home/aacastro/Alejandro/DQ_ACA_2024/B/data/train/images
-val: /home/aacastro/Alejandro/DQ_ACA_2024/B/data/assess/images
-test: /home/aacastro/Alejandro/DQ_ACA_2024/B/data/test/images
-
-nc: 2
-names: ['OK', 'NOK']
-ch: 1
