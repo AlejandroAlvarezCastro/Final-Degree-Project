@@ -1,0 +1,233 @@
+##################################################               ###################################################################
+##############################################     EVIDENTLY DATA     ###################################################################
+##################################################               ###################################################################
+
+evidently:
+  token: dG9rbgF5sQ3u67hNVo7e7sL4fnJ4XK8QXIhKPfMqxlZw8LUKowBQDkYS6R6ocAbPPQ6GNh3cYgu8ob2XcI08hhQiZgxEZbe2xTdGbvfScslPg5mxdq60ZhuAiKzfZt8BbXpeEW7FIlAkQ25dCkQodDzEywTpQ7V1CqVD
+  url: https://app.evidently.cloud
+  project_id: 78a9f0c5-e1c4-4808-adeb-47b0ec6a6024
+
+##################################################               ###################################################################
+##############################################         MODELS        ###################################################################
+##################################################               ###################################################################
+
+
+models:
+
+  ########################    3 CONVS / 3 DENSE  ####################################
+  model1: 
+    arch: ['C', 'C', 'N', 'C', 'P', 'flatten', 'F', 'F', 'F']
+    arch_name: architecture_3conv_3dense_8
+    kernel_widths: '50_cte'
+    filters: '32_cte'
+    dropouts: '0.5_cte'
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8]
+
+  model2:
+    arch: ['C', 'C', 'N', 'P', 'C', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D']
+    arch_name: architecture_3conv_3dense_24
+    kernel_widths: '50_cte'
+    filters: '32_cte'
+    dropouts: '0.5_cte'
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8]
+
+  ########################    3 CONVS / 7 DENSE  ####################################
+
+  model3: 
+    arch: ['C', 'C', 'C', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+    arch_name: architecture_3conv_7dense_17
+    kernel_widths: '50_cte'
+    filters: '32_cte'
+    dropouts: '0.5_cte'
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8]
+
+  model4:
+    arch: ['C', 'C', 'N', 'C', 'P', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F']
+    arch_name: architecture_3conv_7dense_32
+    kernel_widths: '50_cte'
+    filters: '32_cte'
+    dropouts: '0.5_cte'
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8]
+
+
+  ########################    3 CONVS / 11 DENSE  ####################################
+
+  model5: 
+    arch: ['C', 'N', 'C', 'N', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+    arch_name: architecture_3conv_11dense_7
+    kernel_widths: '50_cte'
+    filters: '32_cte'
+    dropouts: '0.5_cte'
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8]
+
+  model6:
+    arch: ['C', 'C', 'C', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+    arch_name: architecture_3conv_11dense_17
+    kernel_widths: '50_cte'
+    filters: '32_cte'
+    dropouts: '0.5_cte'
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8]
+
+  ######################    5 CONVS / 3 DENSE  ####################################
+
+  model7: 
+    arch: ['C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F']
+    arch_name: architecture_5conv_3dense_11
+    kernel_widths: '50_cte'
+    filters: '32_cte'
+    dropouts: '0.5_cte'
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8]
+
+  model8:
+    arch: ['C', 'C', 'C', 'C', 'C', 'flatten', 'F', 'F', 'F', 'D']
+    arch_name: architecture_5conv_3dense_25
+    kernel_widths: '50_cte'
+    filters: '32_cte'
+    dropouts: '0.5_cte'
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8]
+
+  ########################    5 CONVS / 7 DENSE  ####################################
+
+  model9: 
+    arch: ['C', 'C', 'N', 'C', 'C', 'N', 'C', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+    arch_name: architecture_5conv_7dense_4
+    kernel_widths: '50_cte'
+    filters: '32_cte'
+    dropouts: '0.5_cte'
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8]
+
+  model10:
+    arch: ['C', 'C', 'C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F']
+    arch_name: architecture_5conv_7dense_34
+    kernel_widths: '50_cte'
+    filters: '32_cte'
+    dropouts: '0.5_cte'
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8]
+
+  ########################    5 CONVS / 11 DENSE  ####################################
+
+  model11: 
+    arch: ['C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+    arch_name: architecture_5conv_11dense_15
+    kernel_widths: '50_cte'
+    filters: '32_cte'
+    dropouts: '0.5_cte'
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8]
+
+  model12:
+    arch: ['C', 'C', 'C', 'C', 'C', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F']
+    arch_name: architecture_5conv_11dense_25
+    kernel_widths: '50_cte'
+    filters: '32_cte'
+    dropouts: '0.5_cte'
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8]
+
+
+  ########################    7 CONVS / 3 DENSE  ####################################
+
+  model13: 
+    arch: ['C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'D']
+    arch_name: architecture_7conv_3dense_31
+    kernel_widths: '50_cte'
+    filters: '32_cte'
+    dropouts: '0.5_cte'
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8]
+
+  model14:
+    arch: ['C', 'C', 'N', 'P', 'C',  'C', 'N', 'P', 'C', 'C', 'N', 'P', 'C', 'flatten', 'F', 'F', 'F', 'D']
+    arch_name: architecture_7conv_3dense_36
+    kernel_widths: '50_cte'
+    filters: '32_cte'
+    dropouts: '0.5_cte'
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8]  
+
+  ########################    7 CONVS / 7 DENSE  ####################################
+
+  model15: 
+    arch: ['C', 'C', 'C', 'C', 'C', 'C', 'C', 'P', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F']
+    arch_name: architecture_7conv_7dense_29
+    kernel_widths: '50_cte'
+    filters: '32_cte'
+    dropouts: '0.5_cte'
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8]
+
+  model16:
+    arch: ['C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+    arch_name: architecture_7conv_7dense_11
+    kernel_widths: '50_cte'
+    filters: '32_cte'
+    dropouts: '0.5_cte'
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8]
+
+  ########################    7 CONVS / 11 DENSE  ####################################
+
+  model17: 
+    arch: ['C', 'C', 'C', 'C', 'C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+    arch_name: architecture_7conv_11dense_18
+    kernel_widths: '50_cte'
+    filters: '32_cte'
+    dropouts: '0.5_cte'
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8]
+
+  model18:
+    arch: ['C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'C', 'N', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F', 'F']
+    arch_name: architecture_7conv_11dense_27
+    kernel_widths: '50_cte'
+    filters: '32_cte'
+    dropouts: '0.5_cte'
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8]
+
+
+  ########################    10 CONVS / 3 DENSE  ####################################
+
+  model19: 
+    arch: ['C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D']
+    arch_name: architecture_10conv_3dense_18
+    kernel_widths: '50_cte'
+    filters: '32_cte'
+    dropouts: '0.5_cte'
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8]
+
+  model20:
+    arch: ['C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'D']
+    arch_name: architecture_10conv_3dense_30
+    kernel_widths: '50_cte'
+    filters: '32_cte'
+    dropouts: '0.5_cte'
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8]
+
+  ########################    10 CONVS / 7 DENSE  ####################################
+
+  model21: 
+    arch: ['C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+    arch_name: architecture_10conv_7dense_6
+    kernel_widths: '50_cte'
+    filters: '32_cte'
+    dropouts: '0.5_cte'
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8]
+
+  model22:
+    arch: ['C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'N', 'flatten', 'F', 'F', 'F', 'D', 'F', 'F', 'F', 'D', 'F']
+    arch_name: architecture_10conv_7dense_26
+    kernel_widths: '50_cte'
+    filters: '32_cte'
+    dropouts: '0.5_cte'
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8]
+
+  ########################    10 CONVS / 11 DENSE  ####################################
+
+  model23: 
+    arch: ['C', 'C', 'N', 'P', 'C', 'C', 'N', 'P', 'C', 'C', 'N', 'P', 'C', 'C', 'N', 'P', 'C', 'C', 'N', 'P', 'flatten', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+    arch_name: architecture_10conv_11dense_12
+    kernel_widths: '50_cte'
+    filters: '32_cte'
+    dropouts: '0.5_cte'
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8]
+
+  model24:
+    arch: ['C', 'C', 'N', 'C', 'C', 'N', 'C', 'C', 'N', 'C', 'C', 'N', 'C', 'C', 'N', 'flatten', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D', 'F', 'D']
+    arch_name: architecture_10conv_11dense_16
+    kernel_widths: '50_cte'
+    filters: '32_cte'
+    dropouts: '0.5_cte'
+    test_suite_thresholds: [0.6, 0.65, 0.7, 0.75, 0.8]
