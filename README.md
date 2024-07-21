@@ -63,8 +63,16 @@ Esta sección se centra en el aprendizaje contrastivo y sus aplicaciones para el
 - `func.py`: Script con funciones auxiliares.
 - `reference_images.ipynb`: Cuaderno Jupyter con imágenes de referencia utilizadas en los experimentos.
 
+## Resumen del Proyecto
+
+El control de calidad de las bobinas de acero galvanizado es crucial debido a su amplia gama de aplicaciones y la necesidad de mantener altos estándares en sectores industriales exigentes. Para abordar este problema, se han desarrollado modelos basados en inteligencia artificial, utilizando Redes Neuronales Convolucionales (CNN), Aprendizaje Profundo por Transferencia (DTL) y Aprendizaje Contrastivo (CL) para clasificar las bobinas de acero según el patrón de espesor del recubrimiento de zinc. Este proyecto tiene como objetivo mejorar significativamente el proceso de toma de decisiones en el control de calidad, ejemplificando una colaboración efectiva entre humanos y máquinas en la Industria 5.0.
+
 ## Cómo Empezar
 
 1. Clona este repositorio: `git clone <URL del repositorio>`
 2. Instala las dependencias necesarias.
 3. Explora las carpetas `A)`, `B)`, y `C` para entender y ejecutar los diferentes experimentos.
+
+## Autor
+
+Alejandro Álvarez Castro
