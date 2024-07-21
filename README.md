@@ -2,7 +2,7 @@
 
 ## Proyecto de Fin de Grado de Alejandro Álvarez Castro
 
-Este repositorio contiene el código y los experimentos realizados para el proyecto de fin de grado titulado "Artificial Intelligence based models to improve quality classification of steel coils in automotive industry", donde se estudian varias aproximaciones de machine learning para resolver un problema concreto en el sector industrial. El proyecto está dividido en tres apartados principales:
+Este repositorio contiene el código realizado para el proyecto de fin de grado titulado "Artificial Intelligence based models to improve quality classification of steel coils in automotive industry", donde se estudian varias aproximaciones de machine learning para resolver un problema concreto en el sector industrial. El proyecto está dividido en tres apartados principales:
 
 ## Estructura del Repositorio
 
@@ -12,65 +12,61 @@ Este repositorio contiene el código y los experimentos realizados para el proye
 
 ### A) Deep Learning
 
-En esta sección se prueban y construyen varios modelos de deep learning para estudiar sus resultados.
+En esta sección se prueban y construyen varios modelos de deep learning y posteriormente se estudian sus resultados.
 
 #### Archivos Principales:
 
-- `Builder.py`: Código para construir los modelos de deep learning.
-- `CreateModel.py`: Script para crear diferentes arquitecturas de modelos.
-- `DQ-Zn-Coating-CNN_models.ipynb`: Cuaderno Jupyter con los experimentos y resultados de los modelos de CNN aplicados al problema de recubrimiento de zinc.
-- `Data.py`: Script para manejar los datos.
-- `DataProcessor.py`: Código para procesar los datos antes de entrenar los modelos.
-- `SIM_DL.py`: Simulador específico para los experimentos de deep learning.
-- `Simulator.py`: Script para ejecutar simulaciones.
+- `Builder.py`: Clase encargada de construir los modelos de deep learning en base a especificaciones concretas.
+- `CreateModel.py`: Clase para crear los modelos (llamando al constructor) con los tags y metadata incluidos.
+- `Data.py`: Clase para cargar los datos necesarios.
+- `DataProcessor.py`: Código para procesar los datos leídos en el yaml para adaptarlos antes de pasarselos a `CreateModel.py`.
+- `SIM_DL.py`: Script para lanzar las simulaciones con los parámetros indicados.
+- `Simulator.py`: Clase que contiene el Simulador de experimentos.
 - `TrainConfig.py`: Configuraciones de entrenamiento para los modelos.
-- `configs.yaml`, `configs10convs.yaml`, `configs3convs.yaml`, `configs5convs.yaml`, `configs7convs.yaml`: Archivos de configuración con diferentes arquitecturas de redes.
-- `final_results.ipynb`: Cuaderno Jupyter con los resultados finales de los experimentos.
-- `justification.ipynb`: Cuaderno Jupyter explicando la justificación de los experimentos.
-- `results_assessment.csv`: Archivo CSV con la evaluación de los resultados.
+- `configs.yaml`, `configs10convs.yaml`, `configs3convs.yaml`, `configs5convs.yaml`, `configs7convs.yaml`: Archivos de configuraciones y arquitecturas en función del número de capas convolucionales.
+- `justification.ipynb`: Cuaderno Jupyter explicando la justificación de la reducción de configuraciones.
+- `final_results.ipynb`: Cuaderno Jupyter que estudia los resultados finales de los experimentos en el conjunto de assessment.
+- `results_assessment.csv`: Archivo CSV con los datos de desempeño de los diferentes modelos.
 
 ### B) Deep Transfer Learning
 
-En esta sección se investiga el uso de técnicas de deep transfer learning para mejorar el rendimiento del modelo.
+En esta sección se explora el uso de técnicas de deep transfer learning para mejorar el rendimiento del modelo. Para ello se utiliza el modelo YOLOv8 de la librería ultralytics (https://docs.ultralytics.com/)
 
 #### Archivos Principales:
 
 - `ConfigGenerator.py`: Generador de configuraciones para los experimentos.
-- `DQ-Zn-Coating-CNN_models.ipynb`: Cuaderno Jupyter con los experimentos y resultados utilizando transfer learning.
-- `Img_preprocessor.py`: Script para el preprocesamiento de imágenes.
-- `SIM_DTL.py`: Simulador específico para los experimentos de transfer learning.
-- `Simulator_B.py`: Script para ejecutar simulaciones en esta sección.
-- `configurationsL.yaml`, `configurationsM.yaml`, `configurationsN.yaml`, `configurationsS.yaml`: Archivos de configuración con diferentes variaciones de modelos de transfer learning.
-- `final_results_B.ipynb`: Cuaderno Jupyter con los resultados finales de los experimentos en esta sección.
-- `results_ass.csv`: Archivo CSV con la evaluación de los resultados.
+- `DQ-Zn-Coating-CNN_models.ipynb`: Cuaderno Jupyter donde se procesan los datos (imágenes) para poder utilizar YOLOv8.
+- `Img_preprocessor.py`: Clase que contiene el procesador de las imágenes para adaptarlas a YOLOv8.
+- `SIM_DTL.py`:  Script para lanzar las simulaciones con los parámetros indicados.
+- `Simulator_B.py`: Clase que contiene el Simulador de experimentos.
+- `configurationsL.yaml`, `configurationsM.yaml`, `configurationsN.yaml`, `configurationsS.yaml`: Archivos de modelos a simular en función del número del modelo preentrenado escogido.
+- `final_results_B.ipynb`: Cuaderno Jupyter que estudia los resultados finales de los experimentos en el conjunto de assessment.
+- `results_ass.csv`: Archivo CSV con los datos de desempeño de los diferentes modelos.
 
 ### C) Contrastive Learning
 
-Esta sección se centra en el aprendizaje contrastivo y sus aplicaciones para el problema estudiado.
+Esta sección se centra en el aprendizaje contrastivo.
 
 #### Archivos Principales:
 
-- `Builder.py`: Código para construir los modelos de aprendizaje contrastivo.
-- `CL_square_images.ipynb`: Cuaderno Jupyter con los experimentos usando imágenes cuadradas.
-- `CreateModel.py`: Script para crear diferentes arquitecturas de modelos de aprendizaje contrastivo.
-- `Data.py`: Script para manejar los datos.
-- `DataProcessor.py`: Código para procesar los datos antes de entrenar los modelos de aprendizaje contrastivo.
-- `Explanation.md`: Documento explicativo sobre los experimentos de aprendizaje contrastivo.
-- `NoSquare_results.ipynb`: Cuaderno Jupyter con los resultados de los experimentos usando imágenes no cuadradas.
-- `SIM_CL.py`: Simulador específico para los experimentos de aprendizaje contrastivo.
-- `Simulator_C.py`: Script para ejecutar simulaciones en esta sección.
-- `Square_results.ipynb`: Cuaderno Jupyter con los resultados de los experimentos usando imágenes cuadradas.
-- `func.py`: Script con funciones auxiliares.
-- `reference_images.ipynb`: Cuaderno Jupyter con imágenes de referencia utilizadas en los experimentos.
-
+- `Builder.py`: Clase para construir los modelos de Deep Learning que se utilizarán como codificadores.
+- `CreateModel.py`: Clase para crear los modelos (llamando al constructor) con los tags y metadata incluidos.
+- `Data.py`: Clase para cargar los datos necesarios (imágenes originales).
+- `DataProcessor.py`: Código para procesar los datos leídos en el yaml para adaptarlos antes de pasarselos a `CreateModel.py`.
+- `NoSquare_results.ipynb`: Cuaderno Jupyter que estudia los resultados finales de los experimentos en el conjunto de assessment con las imágenes originales.
+- `SIM_CL.py`: Script para lanzar las simulaciones con los parámetros indicados.
+- `Simulator_C.py`: Clase que contiene el Simulador de experimentos.
+- `Square_results.ipynb`: Cuaderno Jupyter que estudia los resultados finales de los experimentos en el conjunto de assessment con las imágenes procesadas (cuadradas).
+- `func.py`:  Script para almacenar funciones útiles para llevar a cabo el CL. Se define la función de pérdida, la distancia euclidea para medir distancia entre caracteristicas en el espacio latente y se definen las funciones para realizar la clasificación a partir del cálculo de similaridad.
+- `reference_images.ipynb`: Cuaderno Jupyter en el que se obtinen las imágenes de referencia para poder realizar la clasificación
 ## Resumen del Proyecto
 
 El control de calidad de las bobinas de acero galvanizado es crucial debido a su amplia gama de aplicaciones y la necesidad de mantener altos estándares en sectores industriales exigentes. Para abordar este problema, se han desarrollado modelos basados en inteligencia artificial, utilizando Redes Neuronales Convolucionales (CNN), Aprendizaje Profundo por Transferencia (DTL) y Aprendizaje Contrastivo (CL) para clasificar las bobinas de acero según el patrón de espesor del recubrimiento de zinc. Este proyecto tiene como objetivo mejorar significativamente el proceso de toma de decisiones en el control de calidad, ejemplificando una colaboración efectiva entre humanos y máquinas en la Industria 5.0.
 
 ## Cómo Empezar
 
-1. Clona este repositorio: `git clone <URL del repositorio>`
-2. Instala las dependencias necesarias.
+1. Clona este repositorio: `git clone https://github.com/jordieres/DQ_ACA_2024.git`
+2. Instala las dependencias necesarias desde el archivo requirements.txt.
 3. Explora las carpetas `A)`, `B)`, y `C` para entender y ejecutar los diferentes experimentos.
 
 ## Autor
