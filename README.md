@@ -1,6 +1,8 @@
-# Proyecto de Fin de Grado: Aproximaciones de Machine Learning en el Sector Industrial
+# Artificial Intelligence based models to improve quality classification of steel coils in automotive industry
 
-Este repositorio contiene el código y los experimentos realizados para el proyecto de fin de grado, donde se estudian varias aproximaciones de machine learning para resolver un problema concreto en el sector industrial. El proyecto está dividido en tres apartados principales:
+## Proyecto de Fin de Grado de Alejandro Álvarez Castro
+
+Este repositorio contiene el código y los experimentos realizados para el proyecto de fin de grado titulado "Artificial Intelligence based models to improve quality classification of steel coils in automotive industry", donde se estudian varias aproximaciones de machine learning para resolver un problema concreto en el sector industrial. El proyecto está dividido en tres apartados principales:
 
 ## Estructura del Repositorio
 
