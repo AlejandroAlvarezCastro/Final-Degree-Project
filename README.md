@@ -67,7 +67,7 @@ El control de calidad de las bobinas de acero galvanizado es crucial debido a su
 
 1. Clona este repositorio: `git clone https://github.com/jordieres/DQ_ACA_2024.git`
 2. Instala las dependencias necesarias desde el archivo requirements.txt.
-3. Explora las carpetas `A)`, `B)`, y `C` para entender y ejecutar los diferentes experimentos.
+3. Explora las carpetas `A)`, `B)`, y `C`, junto al documento del proyecto para entender y ejecutar los diferentes experimentos.
 
 ## Autor
 
