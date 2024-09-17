@@ -2,7 +2,7 @@
 
 ## Proyecto de Fin de Grado de Alejandro Álvarez Castro
 
-Este repositorio contiene el código realizado para el proyecto de fin de grado titulado "Artificial Intelligence based models to improve quality classification of steel coils in automotive industry", donde se estudian varias aproximaciones de machine learning para resolver un problema concreto en el sector industrial. El proyecto está dividido en tres apartados principales:
+Este repositorio contiene el código realizado para el proyecto de fin de grado titulado "Artificial Intelligence based models to improve quality classification of steel coils in automotive industry" (https://zenodo.org/records/13074556), donde se estudian varias aproximaciones de machine learning para resolver un problema concreto en el sector industrial. El proyecto está dividido en tres apartados principales:
 
 ## Estructura del Repositorio
 
